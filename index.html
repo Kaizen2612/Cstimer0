@@ -9,24 +9,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
 
   <!-- =========================================================
-       PHẦN 1: CSS — KHUNG VUÔNG, CÁC GIAO DIỆN & QUẢN LÝ DANH SÁCH
+       PHẦN 1: CSS — BỐ CỤC GỌN 1 MÀN HÌNH, KỶ LỤC DƯỚI ĐỒNG HỒ & NÚT 3 CHẤM
        ========================================================= -->
   <style>
     :root {
       --bg-base: #0b1021;
-      --bg-overlay: radial-gradient(circle at center, rgba(10, 14, 28, 0.22) 0%, rgba(6, 9, 20, 0.55) 100%);
+      --bg-overlay: radial-gradient(circle at center, rgba(10, 14, 28, 0.22) 0%, rgba(6, 9, 20, 0.58) 100%);
       --panel-bg: rgba(255, 255, 255, 0.1);
       --panel-border: rgba(255, 255, 255, 0.22);
       --panel-blur: 15px;
-      --panel-radius: 16px;
-      --subpanel-bg: rgba(0, 0, 0, 0.22);
+      --panel-radius: 14px;
+      --subpanel-bg: rgba(0, 0, 0, 0.24);
       --subpanel-border: rgba(255, 255, 255, 0.14);
       --btn-bg: rgba(255, 255, 255, 0.12);
       --btn-bg-hover: rgba(255, 255, 255, 0.22);
       --btn-border: rgba(255, 255, 255, 0.26);
       --text-primary: #ffffff;
-      --text-secondary: rgba(255, 255, 255, 0.82);
-      --text-muted: rgba(255, 255, 255, 0.62);
+      --text-secondary: rgba(255, 255, 255, 0.84);
+      --text-muted: rgba(255, 255, 255, 0.64);
+      --accent-stat: #7dd3fc;
       --state-idle: #ffffff;
       --state-holding: #ff4d6d;
       --state-ready: #2ee59d;
@@ -41,7 +42,7 @@
     body[data-theme="dark"] {
       --bg-base: #0f1117;
       --bg-overlay: rgba(9, 11, 16, 0.62);
-      --panel-bg: rgba(24, 27, 36, 0.88);
+      --panel-bg: rgba(24, 27, 36, 0.9);
       --panel-border: rgba(255, 255, 255, 0.1);
       --panel-blur: 10px;
       --panel-radius: 12px;
@@ -50,6 +51,7 @@
       --btn-bg: rgba(255, 255, 255, 0.08);
       --btn-bg-hover: rgba(255, 255, 255, 0.16);
       --btn-border: rgba(255, 255, 255, 0.15);
+      --accent-stat: #38bdf8;
       --shadow-panel: 0 10px 28px rgba(0, 0, 0, 0.45);
     }
 
@@ -57,11 +59,11 @@
     body[data-theme="light"] {
       --bg-base: #eef2f7;
       --bg-overlay: rgba(241, 245, 249, 0.58);
-      --panel-bg: rgba(255, 255, 255, 0.86);
+      --panel-bg: rgba(255, 255, 255, 0.88);
       --panel-border: rgba(15, 23, 42, 0.12);
       --panel-blur: 12px;
       --panel-radius: 12px;
-      --subpanel-bg: rgba(241, 245, 249, 0.9);
+      --subpanel-bg: rgba(241, 245, 249, 0.92);
       --subpanel-border: rgba(15, 23, 42, 0.1);
       --btn-bg: rgba(15, 23, 42, 0.06);
       --btn-bg-hover: rgba(15, 23, 42, 0.12);
@@ -69,6 +71,7 @@
       --text-primary: #0f172a;
       --text-secondary: #334155;
       --text-muted: #64748b;
+      --accent-stat: #0284c7;
       --state-idle: #0f172a;
       --state-holding: #e11d48;
       --state-ready: #059669;
@@ -77,27 +80,28 @@
       --shadow-text: none;
     }
 
-    /* Giao diện 4: Cổ điển (WCA Classic) */
+    /* Giao diện 4: Cổ điển (WCA Classic / Bảng phấn) */
     body[data-theme="classic"] {
-      --bg-base: #111827;
-      --bg-overlay: rgba(17, 24, 39, 0.65);
-      --panel-bg: rgba(31, 41, 55, 0.92);
-      --panel-border: rgba(245, 158, 11, 0.35);
+      --bg-base: #162a24;
+      --bg-overlay: rgba(12, 24, 20, 0.58);
+      --panel-bg: rgba(26, 56, 46, 0.92);
+      --panel-border: rgba(180, 130, 80, 0.65);
       --panel-blur: 6px;
-      --panel-radius: 6px;
-      --subpanel-bg: rgba(17, 24, 39, 0.85);
-      --subpanel-border: rgba(255, 255, 255, 0.12);
-      --btn-bg: rgba(245, 158, 11, 0.14);
-      --btn-bg-hover: rgba(245, 158, 11, 0.26);
-      --btn-border: rgba(245, 158, 11, 0.45);
+      --panel-radius: 10px;
+      --subpanel-bg: rgba(18, 40, 33, 0.88);
+      --subpanel-border: rgba(255, 255, 255, 0.14);
+      --btn-bg: rgba(255, 255, 255, 0.1);
+      --btn-bg-hover: rgba(255, 255, 255, 0.2);
+      --btn-border: rgba(255, 255, 255, 0.24);
       --text-primary: #f9fafb;
       --text-secondary: #e5e7eb;
       --text-muted: #9ca3af;
+      --accent-stat: #93c5fd;
       --state-idle: #f9fafb;
-      --state-holding: #ef4444;
-      --state-ready: #10b981;
-      --state-running: #fde68a;
-      --shadow-panel: 0 8px 20px rgba(0, 0, 0, 0.4);
+      --state-holding: #f87171;
+      --state-ready: #34d399;
+      --state-running: #fef08a;
+      --shadow-panel: 0 8px 22px rgba(0, 0, 0, 0.45);
       --shadow-text: 0 2px 6px rgba(0, 0, 0, 0.55);
     }
 
@@ -110,10 +114,10 @@
 
     html, body {
       width: 100%;
-      min-height: 100dvh;
+      height: 100dvh;
       font-family: var(--font-sans);
       color: var(--text-primary);
-      overflow-x: hidden;
+      overflow: hidden;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -142,7 +146,7 @@
     }
 
     body[data-theme="classic"] {
-      background-image: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+      background-image: linear-gradient(160deg, #1b352c 0%, #11221c 100%);
     }
 
     body::before {
@@ -155,26 +159,27 @@
       transition: background 0.25s ease;
     }
 
+    /* =========================================================
+       BỐ CỤC CHÍNH GỌN TRONG 1 MÀN HÌNH (KHÔNG CẦN VUỐT XUỐNG)
+       ========================================================= */
     .app-shell {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 1280px;
-      min-height: 100dvh;
+      max-width: 760px;
+      height: 100dvh;
       margin: 0 auto;
-      padding: 20px 24px 24px;
-      display: grid;
-      grid-template-columns: 1fr 375px;
-      grid-template-rows: auto 1fr;
-      grid-template-areas:
-        "header header"
-        "timer sidebar";
-      gap: 18px;
-      align-items: stretch;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
     }
 
-    body.is-timing .panel-box:not(.timer-panel) {
-      opacity: 0.22;
+    body.is-timing .top-bar,
+    body.is-timing .scramble-panel,
+    body.is-timing .bottom-dock {
+      opacity: 0.18;
       filter: blur(2px);
       pointer-events: none;
     }
@@ -187,62 +192,72 @@
       border: 1px solid var(--panel-border);
       border-radius: var(--panel-radius);
       box-shadow: var(--shadow-panel);
-      transition: opacity 0.22s ease, filter 0.22s ease, background 0.22s ease, border-color 0.22s ease, border-radius 0.22s ease;
-      overflow: hidden;
+      transition: opacity 0.22s ease, filter 0.22s ease, background 0.22s ease, border-color 0.22s ease;
     }
 
     /* =========================================================
-       PANEL 1: HEADER & SCRAMBLE
+       1. THANH TRÊN CÙNG (TÊN APP, CHỌN GIAO DIỆN, HÌNH NỀN, NÚT 3 CHẤM)
        ========================================================= */
-    .header-panel {
-      grid-area: header;
-      padding: 18px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
+      gap: 8px;
+      padding: 8px 12px;
+      flex-shrink: 0;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.01em;
-      text-shadow: var(--shadow-text);
+      gap: 8px;
+      min-width: 0;
     }
 
-    .brand-badge {
-      font-size: 0.72rem;
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ef4444 0%, #f59e0b 35%, #10b981 70%, #3b82f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-title {
       font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 6px;
-      background: var(--btn-bg);
-      border: 1px solid var(--btn-border);
-      letter-spacing: 0.05em;
+      font-size: 0.94rem;
+      line-height: 1.15;
+      text-shadow: var(--shadow-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .toolbar {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .theme-picker {
-      display: inline-flex;
-      align-items: center;
       gap: 6px;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
+      flex-wrap: nowrap;
     }
 
     .glass-select {
@@ -252,14 +267,14 @@
       background: var(--btn-bg);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: 0.84rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 7px 28px 7px 12px;
+      padding: 6px 24px 6px 10px;
       border-radius: 8px;
       cursor: pointer;
       outline: none;
       background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-      background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+      background-position: calc(100% - 12px) 50%, calc(100% - 7px) 50%;
       background-size: 5px 5px, 5px 5px;
       background-repeat: no-repeat;
     }
@@ -275,8 +290,8 @@
       background: var(--subpanel-bg);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: 0.9rem;
-      padding: 10px 12px;
+      font-size: 0.88rem;
+      padding: 9px 11px;
       border-radius: 8px;
       outline: none;
     }
@@ -291,9 +306,9 @@
       background: var(--btn-bg);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 7px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
@@ -301,21 +316,32 @@
       justify-content: center;
       gap: 5px;
       text-shadow: var(--shadow-text);
-      transition: background 0.18s ease, transform 0.12s ease;
+      transition: background 0.18s ease, transform 0.12s ease, opacity 0.18s ease;
+      white-space: nowrap;
     }
 
-    .glass-btn:hover {
+    .glass-btn:hover:not(:disabled) {
       background: var(--btn-bg-hover);
       transform: translateY(-1px);
     }
 
-    .glass-btn:active {
+    .glass-btn:active:not(:disabled) {
       transform: scale(0.97);
     }
 
-    .glass-btn.danger:hover {
-      background: rgba(255, 77, 109, 0.28);
-      border-color: rgba(255, 77, 109, 0.55);
+    .glass-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .glass-btn.danger:not(:disabled) {
+      background: rgba(255, 77, 109, 0.2);
+      border-color: rgba(255, 77, 109, 0.48);
+    }
+
+    .glass-btn.danger:hover:not(:disabled) {
+      background: rgba(255, 77, 109, 0.34);
+      border-color: rgba(255, 77, 109, 0.7);
     }
 
     .glass-btn.primary {
@@ -323,41 +349,57 @@
       border-color: rgba(46, 229, 157, 0.5);
     }
 
-    .glass-btn.primary:hover {
+    .glass-btn.primary:hover:not(:disabled) {
       background: rgba(46, 229, 157, 0.32);
     }
 
-    .scramble-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+    .dots-btn {
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1;
+      padding: 5px 11px;
+      letter-spacing: 1px;
+    }
+
+    /* =========================================================
+       2. BẢNG SCRAMBLE (TRÊN)
+       ========================================================= */
+    .scramble-panel {
       padding: 12px 16px;
-      border-radius: calc(var(--panel-radius) - 4px);
-      background: var(--subpanel-bg);
-      border: 1px solid var(--subpanel-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
     .scramble-text {
       font-family: var(--font-mono);
-      font-size: clamp(1.05rem, 2.2vw, 1.42rem);
+      font-size: clamp(1rem, 2.5vw, 1.32rem);
       font-weight: 700;
-      line-height: 1.45;
+      line-height: 1.42;
       letter-spacing: 0.04em;
       color: var(--text-primary);
       text-shadow: var(--shadow-text);
       text-align: center;
-      flex: 1;
-      word-spacing: 0.2em;
+      word-spacing: 0.18em;
+    }
+
+    .scramble-subbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
     /* =========================================================
-       PANEL 2: ĐỒNG HỒ WCA (TRUNG TÂM)
+       3. BẢNG ĐỒNG HỒ BẤM GIỜ (GIỮA)
        ========================================================= */
     .timer-panel {
-      grid-area: timer;
-      min-height: 400px;
-      padding: 36px 32px;
+      flex: 1;
+      min-height: 175px;
+      padding: 20px 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -368,23 +410,23 @@
     }
 
     .timer-status-pill {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 6px 14px;
+      padding: 4px 12px;
       border-radius: 8px;
       background: var(--btn-bg);
       border: 1px solid var(--btn-border);
       color: var(--text-secondary);
       text-shadow: var(--shadow-text);
-      margin-bottom: 18px;
+      margin-bottom: 10px;
       transition: all 0.18s ease;
     }
 
     .timer-display {
       font-family: var(--font-mono);
-      font-size: clamp(4.2rem, 11vw, 7.6rem);
+      font-size: clamp(3.6rem, 12vw, 6.4rem);
       font-weight: 800;
       line-height: 1;
       letter-spacing: -0.02em;
@@ -411,45 +453,224 @@
     }
 
     .timer-hint {
-      margin-top: 22px;
-      font-size: 0.88rem;
+      margin-top: 10px;
+      font-size: 0.78rem;
       color: var(--text-secondary);
       text-shadow: var(--shadow-text);
-      max-width: 440px;
-      line-height: 1.5;
+      max-width: 400px;
+      line-height: 1.4;
     }
 
     .quick-penalty-bar {
-      margin-top: 20px;
+      margin-top: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: center;
-      min-height: 36px;
+      min-height: 28px;
     }
 
     /* =========================================================
-       PANEL 3: DANH SÁCH LẦN GIẢI (SESSIONS), THỐNG KÊ & LỊCH SỬ
+       4. KHỐI KỶ LỤC & THANH ĐIỀU HƯỚNG DƯỚI CÙNG (GIỐNG HÌNH MẪU)
        ========================================================= */
-    .sidebar-panel {
-      grid-area: sidebar;
+    .bottom-dock {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Hàng hiển thị kỷ lục AO5,PB, AO12, N + hình trải 2D Rubik bên phải */
+    .records-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 16px;
+    }
+
+    .records-metrics {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(95px, 1fr));
+      row-gap: 10px;
+      column-gap: 16px;
+    }
+
+    .record-line {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .record-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      min-width: 38px;
+    }
+
+    .record-val {
+      font-family: var(--font-mono);
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-shadow: var(--shadow-text);
+    }
+
+    .record-val.highlight {
+      color: var(--accent-stat);
+    }
+
+    /* Hình trải 2D của khối Rubik 3x3 (Cube Net Preview) */
+    .cube-net-box {
+      background: var(--subpanel-bg);
+      border: 1px solid var(--subpanel-border);
+      border-radius: 10px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cube-net-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 24px);
+      grid-template-rows: repeat(3, 24px);
+      gap: 3px;
+    }
+
+    .cube-face {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 1px;
+      border-radius: 2px;
+    }
+
+    .sticker {
+      width: 100%;
+      height: 100%;
+      border-radius: 1px;
+    }
+
+    /* Thanh tab 5 nút dưới cùng (Trang chủ, Lịch sử, Danh sách, Giao diện, Thêm •••) */
+    .bottom-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--subpanel-border);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .nav-tab {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      padding: 8px 4px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      position: relative;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-tab:hover {
+      background: var(--btn-bg);
+      color: var(--text-primary);
+    }
+
+    .nav-tab.is-active {
+      color: var(--accent-stat);
+    }
+
+    .nav-icon {
+      font-size: 1rem;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .nav-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: 3px;
+      right: calc(50% - 22px);
+      background: #2563eb;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 999px;
+      line-height: 1.2;
+    }
+
+    /* =========================================================
+       DRAWER / POPUP CHO LỊCH SỬ & NÚT 3 CHẤM (DANH SÁCH GIẢI)
+       ========================================================= */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 18, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .sheet-backdrop.is-open {
+      display: flex;
+    }
+
+    .sheet-card {
+      width: 100%;
+      max-width: 480px;
+      max-height: 86dvh;
       padding: 18px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      max-height: calc(100dvh - 165px);
-      min-height: 420px;
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--subpanel-border);
+      padding-bottom: 10px;
+    }
+
+    .sheet-title {
+      font-size: 1rem;
+      font-weight: 700;
     }
 
     .session-manager {
       background: var(--subpanel-bg);
       border: 1px solid var(--subpanel-border);
       border-radius: calc(var(--panel-radius) - 4px);
-      padding: 10px 12px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .session-top {
@@ -460,7 +681,7 @@
     }
 
     .session-label {
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -480,38 +701,8 @@
 
     .session-actions .glass-btn {
       flex: 1;
-      padding: 6px 8px;
+      padding: 7px 8px;
       font-size: 0.76rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .stat-card {
-      background: var(--subpanel-bg);
-      border: 1px solid var(--subpanel-border);
-      border-radius: calc(var(--panel-radius) - 4px);
-      padding: 10px 12px;
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-    }
-
-    .stat-value {
-      margin-top: 3px;
-      font-family: var(--font-mono);
-      font-size: 1.18rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      text-shadow: var(--shadow-text);
     }
 
     .history-header {
@@ -519,29 +710,54 @@
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      padding: 0 2px;
       flex-wrap: wrap;
     }
 
     .history-title {
       font-size: 0.88rem;
       font-weight: 700;
-      text-shadow: var(--shadow-text);
     }
 
     .history-tools {
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .history-tools .glass-btn {
-      padding: 5px 9px;
-      font-size: 0.75rem;
+    .selection-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: calc(var(--panel-radius) - 6px);
+      background: var(--subpanel-bg);
+      border: 1px solid var(--subpanel-border);
+      font-size: 0.78rem;
+    }
+
+    .select-all-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .solve-checkbox {
+      width: 16px;
+      height: 16px;
+      accent-color: #ff4d6d;
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
     .history-list {
       flex: 1;
+      min-height: 180px;
+      max-height: 44dvh;
       overflow-y: auto;
       padding-right: 4px;
       display: flex;
@@ -563,7 +779,7 @@
       text-align: center;
       font-size: 0.84rem;
       color: var(--text-muted);
-      padding: 20px 10px;
+      padding: 24px 10px;
       line-height: 1.5;
     }
 
@@ -576,17 +792,30 @@
       border-radius: calc(var(--panel-radius) - 6px);
       background: var(--subpanel-bg);
       border: 1px solid var(--subpanel-border);
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
     .solve-item:hover {
       background: var(--btn-bg);
     }
 
+    .solve-item.is-selected {
+      background: rgba(255, 77, 109, 0.16);
+      border-color: rgba(255, 77, 109, 0.58);
+    }
+
+    .solve-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex: 1;
+      min-width: 0;
+    }
+
     .solve-main {
       display: flex;
       align-items: baseline;
-      gap: 10px;
+      gap: 9px;
       cursor: pointer;
       flex: 1;
       min-width: 0;
@@ -644,15 +873,15 @@
     }
 
     /* =========================================================
-       MODAL & TOAST NỘI BỘ (KHÔNG DÙNG ALERT/CONFIRM/PROMPT)
+       MODAL XÁC NHẬN & TOAST
        ========================================================= */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(4, 7, 18, 0.65);
+      background: rgba(4, 7, 18, 0.68);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      z-index: 50;
+      z-index: 60;
       display: none;
       align-items: center;
       justify-content: center;
@@ -665,21 +894,21 @@
 
     .modal-card {
       width: 100%;
-      max-width: 440px;
-      padding: 22px 24px;
+      max-width: 420px;
+      padding: 20px 22px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .modal-title {
-      font-size: 1.06rem;
+      font-size: 1.04rem;
       font-weight: 700;
     }
 
     .modal-body {
-      font-size: 0.9rem;
-      line-height: 1.55;
+      font-size: 0.88rem;
+      line-height: 1.5;
       color: var(--text-secondary);
       word-break: break-word;
       display: flex;
@@ -694,8 +923,8 @@
       border-radius: 8px;
       border: 1px solid var(--subpanel-border);
       color: var(--text-primary);
-      font-size: 0.88rem;
-      max-height: 220px;
+      font-size: 0.86rem;
+      max-height: 210px;
       overflow-y: auto;
       white-space: pre-wrap;
       user-select: text;
@@ -712,22 +941,22 @@
 
     .toast {
       position: fixed;
-      bottom: 22px;
+      bottom: 74px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.94);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.22);
       color: #fff;
-      padding: 10px 18px;
+      padding: 9px 16px;
       border-radius: 8px;
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       font-weight: 500;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
-      z-index: 60;
+      z-index: 70;
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
       text-align: center;
       max-width: 90vw;
@@ -747,105 +976,141 @@
       white-space: nowrap;
     }
 
-    /* =========================================================
-       RESPONSIVE: TABLET & ĐIỆN THOẠI
-       ========================================================= */
-    @media (max-width: 960px) {
+    @media (max-width: 480px) {
       .app-shell {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        grid-template-areas:
-          "header"
-          "timer"
-          "sidebar";
-        padding: 14px 14px 24px;
-        gap: 14px;
+        padding: 8px 10px;
+        gap: 8px;
       }
 
-      .header-panel {
-        padding: 16px 18px;
-      }
-
-      .timer-panel {
-        min-height: 280px;
-        padding: 28px 20px;
-      }
-
-      .sidebar-panel {
-        max-height: 520px;
-        min-height: 320px;
-        padding: 16px;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .scramble-box {
-        flex-direction: column;
+      .records-strip {
+        padding: 10px 12px;
         gap: 10px;
       }
 
-      .timer-panel {
-        min-height: 240px;
-        padding: 24px 16px;
+      .record-val {
+        font-size: 1.02rem;
       }
 
-      .timer-hint {
-        font-size: 0.8rem;
-      }
-
-      .glass-btn, .glass-select {
-        font-size: 0.78rem;
-        padding: 7px 10px;
+      .cube-net-grid {
+        grid-template-columns: repeat(4, 21px);
+        grid-template-rows: repeat(3, 21px);
       }
     }
   </style>
 </head>
-<body data-theme="glass">
+<body data-theme="classic">
   <!-- =========================================================
-       PHẦN 2: HTML — CẤU TRÚC GIAO DIỆN & QUẢN LÝ DANH SÁCH GIẢI
+       PHẦN 2: HTML — GIAO DIỆN 1 MÀN HÌNH GIỐNG HÌNH MẪU
        ========================================================= -->
   <main class="app-shell">
-    <!-- Khối Header & Scramble -->
-    <header class="panel-box header-panel">
-      <div class="top-bar">
-        <div class="brand">
-          <span>Rubik's Timer</span>
-          <span class="brand-badge">WCA 3x3</span>
-        </div>
-        <div class="toolbar">
-          <label class="theme-picker" for="themeSelect">
-            <span>Giao diện:</span>
-            <select id="themeSelect" class="glass-select" aria-label="Chọn giao diện">
-              <option value="glass">Kính mờ (Glass)</option>
-              <option value="dark">Tối giản (Dark)</option>
-              <option value="light">Sáng (Light)</option>
-              <option value="classic">Cổ điển (WCA)</option>
-            </select>
-          </label>
-          <input type="file" id="bgFileInput" class="visually-hidden" accept="image/*" />
-          <button type="button" id="changeBgBtn" class="glass-btn">Đổi hình nền</button>
-          <button type="button" id="resetBgBtn" class="glass-btn" style="display: none;">Nền mặc định</button>
+    <!-- 1. Thanh tiêu đề gọn + nút 3 chấm mở Danh sách & Lịch sử -->
+    <header class="panel-box top-bar">
+      <div class="brand">
+        <div class="brand-icon">3×3</div>
+        <div class="brand-text">
+          <span class="brand-title">Rubik's Timer</span>
+          <span id="activeSessionLabel" class="brand-sub">Danh sách 1 (3x3)</span>
         </div>
       </div>
 
-      <div class="scramble-box">
-        <div id="scrambleDisplay" class="scramble-text" aria-live="polite">Đang tạo scramble...</div>
-        <button type="button" id="newScrambleBtn" class="glass-btn" title="Tạo scramble mới">Scramble mới</button>
+      <div class="toolbar">
+        <select id="themeSelect" class="glass-select" aria-label="Chọn giao diện" title="Đổi giao diện">
+          <option value="classic">Bảng phấn (Classic)</option>
+          <option value="glass">Kính mờ (Glass)</option>
+          <option value="dark">Tối giản (Dark)</option>
+          <option value="light">Sáng (Light)</option>
+        </select>
+        <input type="file" id="bgFileInput" class="visually-hidden" accept="image/*" />
+        <button type="button" id="changeBgBtn" class="glass-btn" title="Đổi hình nền">Đổi hình nền</button>
+        <button type="button" id="resetBgBtn" class="glass-btn" style="display: none;" title="Khôi phục nền mặc định">Nền mặc định</button>
+        <button type="button" id="openMenuDotsBtn" class="glass-btn dots-btn" title="Mở danh sách lần giải & lịch sử" aria-label="Mở menu danh sách lần giải">•••</button>
       </div>
     </header>
 
-    <!-- Khối Đồng hồ trung tâm -->
+    <!-- 2. Khung Scramble ở trên -->
+    <section class="panel-box scramble-panel" aria-label="Công thức trộn Rubik">
+      <div id="scrambleDisplay" class="scramble-text" aria-live="polite">Đang tạo scramble...</div>
+      <div class="scramble-subbar">
+        <span>3x3x3 WCA Scramble</span>
+        <button type="button" id="newScrambleBtn" class="mini-btn" title="Đổi scramble mới">Scramble mới</button>
+      </div>
+    </section>
+
+    <!-- 3. Khung Đồng hồ bấm giờ ở giữa -->
     <section id="timerZone" class="panel-box timer-panel" aria-label="Khu vực bấm giờ Rubik">
       <div id="timerStatus" class="timer-status-pill">Sẵn sàng</div>
       <div id="timerDisplay" class="timer-display">0.00</div>
       <p id="timerHint" class="timer-hint">
-        Giữ phím <strong>Space</strong> (hoặc chạm giữ màn hình) 0.5 giây đến khi chuyển xanh, thả để bắt đầu.
+        Giữ <strong>Space</strong> hoặc chạm giữ màn hình 0.5s đến khi xanh, thả để bắt đầu.
       </p>
       <div id="quickPenaltyBar" class="quick-penalty-bar"></div>
     </section>
 
-    <!-- Khối Quản lý Danh sách (Sessions), Thống kê & Lịch sử -->
-    <aside class="panel-box sidebar-panel" aria-label="Danh sách lần giải và thống kê">
+    <!-- 4. Khung Kỷ lục ngay dưới đồng hồ + hình trải Rubik 2D + thanh nút dưới cùng -->
+    <footer class="panel-box bottom-dock" aria-label="Kỷ lục và điều hướng">
+      <div class="records-strip">
+        <div class="records-metrics">
+          <div class="record-line">
+            <span class="record-tag">AO5</span>
+            <span id="statAo5" class="record-val highlight">-</span>
+          </div>
+          <div class="record-line">
+            <span class="record-tag">PB</span>
+            <span id="statBest" class="record-val">-</span>
+          </div>
+          <div class="record-line">
+            <span class="record-tag">AO12</span>
+            <span id="statAo12" class="record-val highlight">-</span>
+          </div>
+          <div class="record-line">
+            <span class="record-tag">N</span>
+            <span id="statCount" class="record-val">0</span>
+          </div>
+        </div>
+
+        <!-- Hình trải 2D khối Rubik 3x3 sau khi scramble -->
+        <div class="cube-net-box" title="Mô phỏng trạng thái Scramble 3x3">
+          <div id="cubeNetGrid" class="cube-net-grid"></div>
+        </div>
+      </div>
+
+      <!-- Thanh điều hướng dưới cùng giống hình mẫu -->
+      <nav class="bottom-nav" aria-label="Menu chức năng nhanh">
+        <button type="button" id="navHomeBtn" class="nav-tab is-active">
+          <span class="nav-icon">⌂</span>
+          <span class="nav-label">Trang chủ</span>
+        </button>
+        <button type="button" id="navHistoryBtn" class="nav-tab">
+          <span class="nav-icon">☰</span>
+          <span class="nav-label">Lịch sử</span>
+          <span id="navHistoryBadge" class="nav-badge">0</span>
+        </button>
+        <button type="button" id="navManualBtn" class="nav-tab">
+          <span class="nav-icon">＋</span>
+          <span class="nav-label">Nhập giờ</span>
+        </button>
+        <button type="button" id="navBgBtn" class="nav-tab">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Hình nền</span>
+        </button>
+        <button type="button" id="navMoreDotsBtn" class="nav-tab">
+          <span class="nav-icon">•••</span>
+          <span class="nav-label">Danh sách</span>
+        </button>
+      </nav>
+    </footer>
+  </main>
+
+  <!-- =========================================================
+       DRAWER POPUP: QUẢN LÝ DANH SÁCH (NÚT 3 CHẤM) & LỊCH SỬ KỶ LỤC
+       ========================================================= -->
+  <div id="sheetBackdrop" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="panel-box sheet-card">
+      <div class="sheet-header">
+        <h2 id="sheetTitle" class="sheet-title">Danh sách & Lịch sử giải</h2>
+        <button type="button" id="closeSheetBtn" class="glass-btn">Đóng ✕</button>
+      </div>
+
       <!-- Quản lý danh sách / phiên giải -->
       <div class="session-manager">
         <div class="session-top">
@@ -859,41 +1124,31 @@
         </div>
       </div>
 
-      <!-- Thống kê của danh sách đang chọn -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Ao5 (Hiện tại)</div>
-          <div id="statAo5" class="stat-value">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Ao12 (Hiện tại)</div>
-          <div id="statAo12" class="stat-value">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Tốt nhất (PB)</div>
-          <div id="statBest" class="stat-value">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Số lần giải</div>
-          <div id="statCount" class="stat-value">0</div>
-        </div>
-      </div>
-
-      <!-- Tiêu đề lịch sử + nhập tay + xuất danh sách -->
+      <!-- Công cụ lịch sử -->
       <div class="history-header">
-        <span class="history-title">Các lần giải</span>
+        <span class="history-title">Các kỷ lục trong danh sách</span>
         <div class="history-tools">
           <button type="button" id="addManualSolveBtn" class="glass-btn" title="Nhập thời gian thủ công">+ Nhập giờ</button>
           <button type="button" id="exportListBtn" class="glass-btn" title="Xem và sao chép danh sách">Xuất DS</button>
-          <button type="button" id="clearHistoryBtn" class="glass-btn danger" title="Làm trống danh sách hiện tại">Xóa tất cả</button>
         </div>
       </div>
 
-      <div id="historyList" class="history-list"></div>
-    </aside>
-  </main>
+      <!-- Thanh tích chọn kỷ lục để xóa -->
+      <div class="selection-bar">
+        <label class="select-all-label" for="selectAllSolves">
+          <input type="checkbox" id="selectAllSolves" class="solve-checkbox" />
+          <span id="selectedCountText">Chọn kỷ lục để xóa</span>
+        </label>
+        <button type="button" id="clearHistoryBtn" class="glass-btn danger" disabled title="Xóa các kỷ lục đã tích chọn">
+          Xóa tất cả
+        </button>
+      </div>
 
-  <!-- Modal đa năng nội bộ -->
+      <div id="historyList" class="history-list"></div>
+    </div>
+  </div>
+
+  <!-- Modal xác nhận / chi tiết -->
   <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="panel-box modal-card">
       <h2 id="modalTitle" class="modal-title">Thông báo</h2>
@@ -906,7 +1161,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <!-- =========================================================
-       PHẦN 3: VANILLA JAVASCRIPT — WCA TIMER, SESSIONS & EXPORT
+       PHẦN 3: VANILLA JAVASCRIPT — WCA TIMER, 2D CUBE NET & MENU 3 CHẤM
        ========================================================= -->
   <script>
     (() => {
@@ -929,29 +1184,44 @@
 
       // ----- DOM ELEMENTS -----
       const themeSelectEl = document.getElementById('themeSelect');
+      const activeSessionLabelEl = document.getElementById('activeSessionLabel');
       const scrambleDisplayEl = document.getElementById('scrambleDisplay');
       const newScrambleBtn = document.getElementById('newScrambleBtn');
       const changeBgBtn = document.getElementById('changeBgBtn');
       const resetBgBtn = document.getElementById('resetBgBtn');
       const bgFileInput = document.getElementById('bgFileInput');
+      const openMenuDotsBtn = document.getElementById('openMenuDotsBtn');
 
       const timerZoneEl = document.getElementById('timerZone');
       const timerStatusEl = document.getElementById('timerStatus');
       const timerDisplayEl = document.getElementById('timerDisplay');
       const quickPenaltyBarEl = document.getElementById('quickPenaltyBar');
 
+      const statAo5El = document.getElementById('statAo5');
+      const statAo12El = document.getElementById('statAo12');
+      const statBestEl = document.getElementById('statBest');
+      const statCountEl = document.getElementById('statCount');
+      const cubeNetGridEl = document.getElementById('cubeNetGrid');
+
+      const navHomeBtn = document.getElementById('navHomeBtn');
+      const navHistoryBtn = document.getElementById('navHistoryBtn');
+      const navHistoryBadgeEl = document.getElementById('navHistoryBadge');
+      const navManualBtn = document.getElementById('navManualBtn');
+      const navBgBtn = document.getElementById('navBgBtn');
+      const navMoreDotsBtn = document.getElementById('navMoreDotsBtn');
+
+      const sheetBackdropEl = document.getElementById('sheetBackdrop');
+      const closeSheetBtn = document.getElementById('closeSheetBtn');
       const sessionSelectEl = document.getElementById('sessionSelect');
       const newSessionBtn = document.getElementById('newSessionBtn');
       const renameSessionBtn = document.getElementById('renameSessionBtn');
       const deleteSessionBtn = document.getElementById('deleteSessionBtn');
 
-      const statAo5El = document.getElementById('statAo5');
-      const statAo12El = document.getElementById('statAo12');
-      const statBestEl = document.getElementById('statBest');
-      const statCountEl = document.getElementById('statCount');
       const historyListEl = document.getElementById('historyList');
       const addManualSolveBtn = document.getElementById('addManualSolveBtn');
       const exportListBtn = document.getElementById('exportListBtn');
+      const selectAllSolvesEl = document.getElementById('selectAllSolves');
+      const selectedCountTextEl = document.getElementById('selectedCountText');
       const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
       const modalBackdropEl = document.getElementById('modalBackdrop');
@@ -970,6 +1240,7 @@
       let currentScramble = '';
       let sessions = [];
       let activeSessionId = '';
+      const selectedSolveIds = new Set();
       let toastTimeoutId = null;
 
       // ----- TIỆN ÍCH LOCALSTORAGE, COPY & TOAST -----
@@ -993,9 +1264,7 @@
       function safeRemoveStorage(key) {
         try {
           window.localStorage.removeItem(key);
-        } catch (err) {
-          // Bỏ qua nếu trình duyệt chặn storage
-        }
+        } catch (err) {}
       }
 
       function copyTextToClipboard(text) {
@@ -1032,13 +1301,44 @@
         if (toastTimeoutId) clearTimeout(toastTimeoutId);
         toastTimeoutId = setTimeout(() => {
           toastEl.classList.remove('is-visible');
-        }, 3200);
+        }, 3000);
       }
+
+      // ----- ĐÓNG / MỞ SHEET DANH SÁCH (NÚT 3 CHẤM) -----
+      function openSheet() {
+        sheetBackdropEl.classList.add('is-open');
+      }
+
+      function closeSheet() {
+        sheetBackdropEl.classList.remove('is-open');
+      }
+
+      openMenuDotsBtn.addEventListener('click', openSheet);
+      navMoreDotsBtn.addEventListener('click', openSheet);
+      navHistoryBtn.addEventListener('click', openSheet);
+      closeSheetBtn.addEventListener('click', closeSheet);
+
+      navHomeBtn.addEventListener('click', () => {
+        closeSheet();
+        closeModal();
+      });
+
+      navManualBtn.addEventListener('click', () => {
+        openAddManualSolveModal();
+      });
+
+      navBgBtn.addEventListener('click', () => {
+        bgFileInput.click();
+      });
+
+      sheetBackdropEl.addEventListener('click', (e) => {
+        if (e.target === sheetBackdropEl) closeSheet();
+      });
 
       // ----- 0. QUẢN LÝ GIAO DIỆN CƠ BẢN -----
       function applyTheme(themeName) {
-        const validThemes = ['glass', 'dark', 'light', 'classic'];
-        const chosen = validThemes.includes(themeName) ? themeName : 'glass';
+        const validThemes = ['classic', 'glass', 'dark', 'light'];
+        const chosen = validThemes.includes(themeName) ? themeName : 'classic';
         document.body.setAttribute('data-theme', chosen);
         themeSelectEl.value = chosen;
         safeSetStorage(STORAGE_THEME_KEY, chosen);
@@ -1049,7 +1349,121 @@
         themeSelectEl.blur();
       });
 
-      // ----- 1. QUẢN LÝ DANH SÁCH LẦN GIẢI (SESSIONS) -----
+      // ----- 1. MÔ PHỎNG HÌNH TRẢI 2D KHỐI RUBIK 3x3 THEO SCRAMBLE -----
+      const FACE_COLORS = {
+        U: '#ffffff', // Trắng
+        L: '#f97316', // Cam
+        F: '#22c55e', // Xanh lá
+        R: '#ef4444', // Đỏ
+        B: '#3b82f6', // Xanh dương
+        D: '#eab308'  // Vàng
+      };
+
+      function createSolvedCube() {
+        return {
+          U: Array(9).fill('U'),
+          L: Array(9).fill('L'),
+          F: Array(9).fill('F'),
+          R: Array(9).fill('R'),
+          B: Array(9).fill('B'),
+          D: Array(9).fill('D')
+        };
+      }
+
+      function rotateFaceCW(arr) {
+        return [
+          arr[6], arr[3], arr[0],
+          arr[7], arr[4], arr[1],
+          arr[8], arr[5], arr[2]
+        ];
+      }
+
+      function applyTurnCW(cube, moveFace) {
+        cube[moveFace] = rotateFaceCW(cube[moveFace]);
+        const { U, D, L, R, F, B } = cube;
+        let temp;
+
+        if (moveFace === 'U') {
+          temp = [F[0], F[1], F[2]];
+          [F[0], F[1], F[2]] = [R[0], R[1], R[2]];
+          [R[0], R[1], R[2]] = [B[0], B[1], B[2]];
+          [B[0], B[1], B[2]] = [L[0], L[1], L[2]];
+          [L[0], L[1], L[2]] = temp;
+        } else if (moveFace === 'D') {
+          temp = [F[6], F[7], F[8]];
+          [F[6], F[7], F[8]] = [L[6], L[7], L[8]];
+          [L[6], L[7], L[8]] = [B[6], B[7], B[8]];
+          [B[6], B[7], B[8]] = [R[6], R[7], R[8]];
+          [R[6], R[7], R[8]] = temp;
+        } else if (moveFace === 'R') {
+          temp = [U[2], U[5], U[8]];
+          [U[2], U[5], U[8]] = [F[2], F[5], F[8]];
+          [F[2], F[5], F[8]] = [D[2], D[5], D[8]];
+          [D[2], D[5], D[8]] = [B[6], B[3], B[0]];
+          [B[6], B[3], B[0]] = temp;
+        } else if (moveFace === 'L') {
+          temp = [U[0], U[3], U[6]];
+          [U[0], U[3], U[6]] = [B[8], B[5], B[2]];
+          [B[8], B[5], B[2]] = [D[0], D[3], D[6]];
+          [D[0], D[3], D[6]] = [F[0], F[3], F[6]];
+          [F[0], F[3], F[6]] = temp;
+        } else if (moveFace === 'F') {
+          temp = [U[6], U[7], U[8]];
+          [U[6], U[7], U[8]] = [L[8], L[5], L[2]];
+          [L[8], L[5], L[2]] = [D[2], D[1], D[0]];
+          [D[2], D[1], D[0]] = [R[0], R[3], R[6]];
+          [R[0], R[3], R[6]] = temp;
+        } else if (moveFace === 'B') {
+          temp = [U[0], U[1], U[2]];
+          [U[0], U[1], U[2]] = [R[2], R[5], R[8]];
+          [R[2], R[5], R[8]] = [D[8], D[7], D[6]];
+          [D[8], D[7], D[6]] = [L[6], L[3], L[0]];
+          [L[6], L[3], L[0]] = temp;
+        }
+      }
+
+      function renderCubeNet(scrambleStr) {
+        const cube = createSolvedCube();
+        const tokens = (scrambleStr || '').trim().split(/\s+/).filter(Boolean);
+
+        tokens.forEach((tok) => {
+          const face = tok[0];
+          if (!['U', 'D', 'L', 'R', 'F', 'B'].includes(face)) return;
+          const mod = tok.slice(1);
+          const turns = mod === '2' ? 2 : mod === "'" ? 3 : 1;
+          for (let i = 0; i < turns; i++) applyTurnCW(cube, face);
+        });
+
+        // Lưới 4x3 cho hình trải chữ thập:
+        // [ ., U, ., . ]
+        // [ L, F, R, B ]
+        // [ ., D, ., . ]
+        const layout = [
+          null, 'U', null, null,
+          'L',  'F', 'R',  'B',
+          null, 'D', null, null
+        ];
+
+        cubeNetGridEl.innerHTML = '';
+        layout.forEach((faceKey) => {
+          if (!faceKey) {
+            const empty = document.createElement('div');
+            cubeNetGridEl.appendChild(empty);
+            return;
+          }
+          const faceEl = document.createElement('div');
+          faceEl.className = 'cube-face';
+          cube[faceKey].forEach((colorCode) => {
+            const sticker = document.createElement('div');
+            sticker.className = 'sticker';
+            sticker.style.backgroundColor = FACE_COLORS[colorCode] || '#ffffff';
+            faceEl.appendChild(sticker);
+          });
+          cubeNetGridEl.appendChild(faceEl);
+        });
+      }
+
+      // ----- 2. QUẢN LÝ DANH SÁCH LẦN GIẢI (SESSIONS) -----
       function getActiveSession() {
         let found = sessions.find((s) => s.id === activeSessionId);
         if (!found && sessions.length > 0) {
@@ -1089,7 +1503,6 @@
           } catch (_) {}
         }
 
-        // Chuyển dữ liệu cũ (nếu có) sang Danh sách 1
         let initialSolves = [];
         const legacyRaw = safeGetStorage(LEGACY_SOLVES_KEY);
         if (legacyRaw) {
@@ -1111,6 +1524,11 @@
 
       function renderSessionSelect() {
         sessionSelectEl.innerHTML = '';
+        const current = getActiveSession();
+        if (current) {
+          activeSessionLabelEl.textContent = current.name;
+        }
+
         sessions.forEach((sess) => {
           const opt = document.createElement('option');
           opt.value = sess.id;
@@ -1122,6 +1540,7 @@
 
       sessionSelectEl.addEventListener('change', (e) => {
         activeSessionId = e.target.value;
+        selectedSolveIds.clear();
         saveSessions();
         renderAllStatsAndHistory();
         const solves = getActiveSolves();
@@ -1129,13 +1548,12 @@
         sessionSelectEl.blur();
       });
 
-      // Modal tạo danh sách mới
       function openCreateSessionModal() {
         modalTitleEl.textContent = 'Tạo danh sách lần giải mới';
         modalBodyEl.innerHTML = '';
 
         const desc = document.createElement('p');
-        desc.textContent = 'Đặt tên cho danh sách mới (ví dụ: Luyện 3x3 CFOP, Giải 2 tay, Thi đấu Chủ nhật...):';
+        desc.textContent = 'Đặt tên cho danh sách mới (ví dụ: Luyện 3x3 CFOP, Giải 1 tay, Thi đấu...):';
 
         const input = document.createElement('input');
         input.type = 'text';
@@ -1165,6 +1583,7 @@
           };
           sessions.push(newSess);
           activeSessionId = newSess.id;
+          selectedSolveIds.clear();
           saveSessions();
           renderAllStatsAndHistory();
           timerDisplayEl.textContent = '0.00';
@@ -1181,7 +1600,6 @@
         setTimeout(() => input.focus(), 40);
       }
 
-      // Modal đổi tên danh sách
       function openRenameSessionModal() {
         const current = getActiveSession();
         if (!current) return;
@@ -1229,10 +1647,9 @@
         setTimeout(() => input.focus(), 40);
       }
 
-      // Modal xóa danh sách
       function openDeleteSessionModal() {
         if (sessions.length <= 1) {
-          showToast('Cần giữ lại ít nhất 1 danh sách. Bạn có thể bấm "Làm trống" để xóa các lần giải.');
+          showToast('Cần giữ lại ít nhất 1 danh sách. Bạn hãy tích chọn các kỷ lục để xóa nhé.');
           return;
         }
         const current = getActiveSession();
@@ -1255,6 +1672,7 @@
         confirmBtn.addEventListener('click', () => {
           sessions = sessions.filter((s) => s.id !== current.id);
           activeSessionId = sessions[0].id;
+          selectedSolveIds.clear();
           saveSessions();
           renderAllStatsAndHistory();
           const solves = getActiveSolves();
@@ -1267,7 +1685,6 @@
         modalBackdropEl.classList.add('is-open');
       }
 
-      // Modal nhập thời gian thủ công vào danh sách
       function openAddManualSolveModal() {
         const current = getActiveSession();
         if (!current) return;
@@ -1330,7 +1747,6 @@
         setTimeout(() => input.focus(), 40);
       }
 
-      // Modal xuất danh sách lần giải để copy chia sẻ
       function openExportListModal() {
         const current = getActiveSession();
         if (!current || current.solves.length === 0) {
@@ -1342,15 +1758,14 @@
         const ao5 = calculateWCAAverage(solves, 5);
         const ao12 = calculateWCAAverage(solves, 12);
         const validTimes = solves.map(getEffectiveTime).filter((t) => t !== Infinity);
-        const bestStr = validTimes.length > 0 ? formatTime(Math.min(...validTimes)) : '--';
+        const bestStr = validTimes.length > 0 ? formatTime(Math.min(...validTimes)) : '-';
 
         const lines = [
           `=== ${current.name} (${solves.length} lần giải) ===`,
-          `PB: ${bestStr} | Ao5: ${ao5 === null ? '--' : formatTime(ao5)} | Ao12: ${ao12 === null ? '--' : formatTime(ao12)}`,
+          `PB: ${bestStr} | Ao5: ${ao5 === null ? '-' : formatTime(ao5)} | Ao12: ${ao12 === null ? '-' : formatTime(ao12)}`,
           ''
         ];
 
-        // Hiển thị theo thứ tự từ lần #1 đến mới nhất
         const chronological = [...solves].reverse();
         chronological.forEach((s, idx) => {
           lines.push(`${idx + 1}. ${formatSolveDisplay(s)}   [${s.scramble || ''}]`);
@@ -1390,7 +1805,7 @@
       addManualSolveBtn.addEventListener('click', openAddManualSolveModal);
       exportListBtn.addEventListener('click', openExportListModal);
 
-      // ----- 2. ĐỊNH DẠNG THỜI GIAN & TÍNH TOÁN WCA -----
+      // ----- 3. ĐỊNH DẠNG THỜI GIAN & TÍNH TOÁN WCA -----
       function formatTime(ms) {
         if (ms === Infinity) return 'DNF';
         const totalCentiseconds = Math.floor(ms / 10);
@@ -1431,7 +1846,7 @@
         return sum / trimmed.length;
       }
 
-      // ----- 3. BỘ SINH SCRAMBLE 3x3 CHUẨN WCA (20-22 MOVES) -----
+      // ----- 4. BỘ SINH SCRAMBLE 3x3 CHUẨN WCA (20-22 MOVES) -----
       function generateScramble() {
         const faces = ['U', 'D', 'L', 'R', 'F', 'B'];
         const axisMap = { U: 0, D: 0, L: 1, R: 1, F: 2, B: 2 };
@@ -1464,9 +1879,10 @@
 
         currentScramble = moves.join(' ');
         scrambleDisplayEl.textContent = currentScramble;
+        renderCubeNet(currentScramble);
       }
 
-      // ----- 4. CƠ CHẾ ĐỒNG HỒ CHUẨN WCA (Date.now + requestAnimationFrame) -----
+      // ----- 5. CƠ CHẾ ĐỒNG HỒ CHUẨN WCA -----
       function setTimerVisual(newState) {
         timerDisplayEl.classList.remove('is-holding', 'is-ready', 'is-running');
         document.body.classList.remove('is-timing');
@@ -1489,7 +1905,13 @@
       }
 
       function startHold() {
-        if (state !== TIMER_STATE.IDLE || modalBackdropEl.classList.contains('is-open')) return;
+        if (
+          state !== TIMER_STATE.IDLE ||
+          modalBackdropEl.classList.contains('is-open') ||
+          sheetBackdropEl.classList.contains('is-open')
+        ) {
+          return;
+        }
         state = TIMER_STATE.HOLDING;
         setTimerVisual(state);
 
@@ -1567,6 +1989,10 @@
           if (e.key === 'Escape') closeModal();
           return;
         }
+        if (sheetBackdropEl.classList.contains('is-open')) {
+          if (e.key === 'Escape') closeSheet();
+          return;
+        }
 
         const activeTag = document.activeElement ? document.activeElement.tagName : '';
         if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
@@ -1588,7 +2014,7 @@
       });
 
       document.addEventListener('keyup', (e) => {
-        if (modalBackdropEl.classList.contains('is-open')) return;
+        if (modalBackdropEl.classList.contains('is-open') || sheetBackdropEl.classList.contains('is-open')) return;
         if (e.code === 'Space') {
           e.preventDefault();
           if (justStopped) {
@@ -1640,7 +2066,49 @@
         }
       });
 
-      // ----- 5. HIỂN THỊ LỊCH SỬ, THỐNG KÊ & MODAL -----
+      // ----- 6. CHỌN & XÓA KỶ LỤC (PHẢI TÍCH CHỌN MỚI XÓA ĐƯỢC) -----
+      function toggleSelectSolve(solveId) {
+        if (selectedSolveIds.has(solveId)) {
+          selectedSolveIds.delete(solveId);
+        } else {
+          selectedSolveIds.add(solveId);
+        }
+        renderAllStatsAndHistory();
+      }
+
+      selectAllSolvesEl.addEventListener('change', (e) => {
+        const solves = getActiveSolves();
+        if (e.target.checked) {
+          solves.forEach((s) => selectedSolveIds.add(s.id));
+        } else {
+          selectedSolveIds.clear();
+        }
+        renderAllStatsAndHistory();
+      });
+
+      function updateSelectionBarUI() {
+        const solves = getActiveSolves();
+        const validIds = new Set(solves.map((s) => s.id));
+        for (const id of [...selectedSolveIds]) {
+          if (!validIds.has(id)) selectedSolveIds.delete(id);
+        }
+
+        const count = selectedSolveIds.size;
+        selectAllSolvesEl.disabled = solves.length === 0;
+        selectAllSolvesEl.checked = solves.length > 0 && count === solves.length;
+        selectAllSolvesEl.indeterminate = count > 0 && count < solves.length;
+
+        if (count === 0) {
+          selectedCountTextEl.textContent = 'Chọn kỷ lục để xóa';
+          clearHistoryBtn.disabled = true;
+          clearHistoryBtn.textContent = 'Xóa đã chọn (0)';
+        } else {
+          selectedCountTextEl.textContent = `Đã chọn ${count}/${solves.length}`;
+          clearHistoryBtn.disabled = false;
+          clearHistoryBtn.textContent = `Xóa đã chọn (${count})`;
+        }
+      }
+
       function togglePenalty(solveId, type) {
         const solves = getActiveSolves();
         const target = solves.find((s) => s.id === solveId);
@@ -1650,17 +2118,6 @@
         renderAllStatsAndHistory();
         if (solves[0] && solves[0].id === solveId) {
           timerDisplayEl.textContent = formatSolveDisplay(solves[0]);
-        }
-      }
-
-      function deleteSolve(solveId) {
-        const current = getActiveSession();
-        if (!current) return;
-        current.solves = current.solves.filter((s) => s.id !== solveId);
-        saveSessions();
-        renderAllStatsAndHistory();
-        if (current.solves.length === 0) {
-          timerDisplayEl.textContent = '0.00';
         }
       }
 
@@ -1682,13 +2139,17 @@
         btnDnf.textContent = 'DNF';
         btnDnf.addEventListener('click', () => togglePenalty(latest.id, 'DNF'));
 
-        const btnDel = document.createElement('button');
-        btnDel.type = 'button';
-        btnDel.className = 'mini-btn';
-        btnDel.textContent = 'Xóa lần vừa rồi';
-        btnDel.addEventListener('click', () => deleteSolve(latest.id));
+        const btnOpenList = document.createElement('button');
+        btnOpenList.type = 'button';
+        btnOpenList.className = 'mini-btn';
+        btnOpenList.textContent = 'Chọn xóa trong DS •••';
+        btnOpenList.addEventListener('click', () => {
+          selectedSolveIds.add(latest.id);
+          renderAllStatsAndHistory();
+          openSheet();
+        });
 
-        quickPenaltyBarEl.append(btnPlus2, btnDnf, btnDel);
+        quickPenaltyBarEl.append(btnPlus2, btnDnf, btnOpenList);
       }
 
       function renderAllStatsAndHistory() {
@@ -1696,16 +2157,18 @@
         const solves = getActiveSolves();
 
         statCountEl.textContent = String(solves.length);
+        navHistoryBadgeEl.textContent = String(solves.length);
 
         const ao5 = calculateWCAAverage(solves, 5);
-        statAo5El.textContent = ao5 === null ? '--' : formatTime(ao5);
+        statAo5El.textContent = ao5 === null ? '-' : formatTime(ao5);
 
         const ao12 = calculateWCAAverage(solves, 12);
-        statAo12El.textContent = ao12 === null ? '--' : formatTime(ao12);
+        statAo12El.textContent = ao12 === null ? '-' : formatTime(ao12);
 
         const validTimes = solves.map(getEffectiveTime).filter((t) => t !== Infinity);
-        statBestEl.textContent = validTimes.length > 0 ? formatTime(Math.min(...validTimes)) : '--';
+        statBestEl.textContent = validTimes.length > 0 ? formatTime(Math.min(...validTimes)) : '-';
 
+        updateSelectionBarUI();
         renderQuickPenaltyBar();
 
         historyListEl.innerHTML = '';
@@ -1719,8 +2182,20 @@
 
         const total = solves.length;
         solves.forEach((solve, idx) => {
+          const isChecked = selectedSolveIds.has(solve.id);
           const row = document.createElement('div');
-          row.className = 'solve-item';
+          row.className = `solve-item ${isChecked ? 'is-selected' : ''}`;
+
+          const leftGroup = document.createElement('div');
+          leftGroup.className = 'solve-left';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'solve-checkbox';
+          checkbox.checked = isChecked;
+          checkbox.title = 'Tích chọn kỷ lục này để xóa';
+          checkbox.setAttribute('aria-label', `Chọn lần giải #${total - idx}`);
+          checkbox.addEventListener('change', () => toggleSelectSolve(solve.id));
 
           const main = document.createElement('div');
           main.className = 'solve-main';
@@ -1736,6 +2211,7 @@
           timeSpan.textContent = formatSolveDisplay(solve);
 
           main.append(numSpan, timeSpan);
+          leftGroup.append(checkbox, main);
 
           const actions = document.createElement('div');
           actions.className = 'solve-actions';
@@ -1752,15 +2228,8 @@
           dnfBtn.textContent = 'DNF';
           dnfBtn.addEventListener('click', () => togglePenalty(solve.id, 'DNF'));
 
-          const delBtn = document.createElement('button');
-          delBtn.type = 'button';
-          delBtn.className = 'mini-btn';
-          delBtn.textContent = '×';
-          delBtn.title = 'Xóa lần giải này';
-          delBtn.addEventListener('click', () => deleteSolve(solve.id));
-
-          actions.append(p2Btn, dnfBtn, delBtn);
-          row.append(main, actions);
+          actions.append(p2Btn, dnfBtn);
+          row.append(leftGroup, actions);
           historyListEl.appendChild(row);
         });
       }
@@ -1786,24 +2255,36 @@
         modalBodyEl.append(timeP, scrambleBox);
         modalActionsEl.innerHTML = '';
 
+        const selectToggleBtn = document.createElement('button');
+        selectToggleBtn.type = 'button';
+        const isSelected = selectedSolveIds.has(solve.id);
+        selectToggleBtn.className = `glass-btn ${isSelected ? '' : 'danger'}`;
+        selectToggleBtn.textContent = isSelected ? 'Bỏ chọn xóa' : 'Chọn để xóa';
+        selectToggleBtn.addEventListener('click', () => {
+          toggleSelectSolve(solve.id);
+          closeModal();
+        });
+
         const closeBtn = document.createElement('button');
         closeBtn.type = 'button';
         closeBtn.className = 'glass-btn';
         closeBtn.textContent = 'Đóng';
         closeBtn.addEventListener('click', closeModal);
-        modalActionsEl.appendChild(closeBtn);
 
+        modalActionsEl.append(selectToggleBtn, closeBtn);
         modalBackdropEl.classList.add('is-open');
       }
 
-      function openClearConfirmModal() {
+      function openDeleteSelectedConfirmModal() {
         const current = getActiveSession();
-        if (!current || current.solves.length === 0) {
-          showToast('Danh sách này đang trống.');
+        if (!current || selectedSolveIds.size === 0) {
+          showToast('Vui lòng tích chọn ít nhất 1 kỷ lục trước khi xóa.');
           return;
         }
-        modalTitleEl.textContent = 'Làm trống danh sách hiện tại?';
-        modalBodyEl.textContent = `Bạn có chắc muốn xóa tất cả ${current.solves.length} lần giải trong "${current.name}"? Các danh sách khác vẫn được giữ nguyên.`;
+
+        const count = selectedSolveIds.size;
+        modalTitleEl.textContent = `Xóa ${count} kỷ lục đã chọn?`;
+        modalBodyEl.textContent = `Bạn có chắc muốn xóa ${count} kỷ lục đã tích chọn khỏi "${current.name}"? Các kỷ lục không được chọn sẽ giữ nguyên.`;
         modalActionsEl.innerHTML = '';
 
         const cancelBtn = document.createElement('button');
@@ -1815,14 +2296,17 @@
         const confirmBtn = document.createElement('button');
         confirmBtn.type = 'button';
         confirmBtn.className = 'glass-btn danger';
-        confirmBtn.textContent = 'Xóa hết lần giải';
+        confirmBtn.textContent = `Xóa ${count} kỷ lục`;
         confirmBtn.addEventListener('click', () => {
-          current.solves = [];
+          current.solves = current.solves.filter((s) => !selectedSolveIds.has(s.id));
+          selectedSolveIds.clear();
           saveSessions();
           renderAllStatsAndHistory();
-          timerDisplayEl.textContent = '0.00';
+          timerDisplayEl.textContent = current.solves.length > 0
+            ? formatSolveDisplay(current.solves[0])
+            : '0.00';
           closeModal();
-          showToast(`Đã làm trống "${current.name}".`);
+          showToast(`Đã xóa ${count} kỷ lục đã chọn.`);
         });
 
         modalActionsEl.append(cancelBtn, confirmBtn);
@@ -1833,7 +2317,7 @@
         if (e.target === modalBackdropEl) closeModal();
       });
 
-      // ----- 6. ĐỔI HÌNH NỀN & NÉN ẢNG BẰNG CANVAS API -----
+      // ----- 7. ĐỔI HÌNH NỀN & NÉN ẢNH BẰNG CANVAS API -----
       function applyBackground(dataUrl) {
         if (dataUrl) {
           document.body.style.backgroundImage = `url("${dataUrl}")`;
@@ -1926,12 +2410,12 @@
         newScrambleBtn.blur();
       });
 
-      clearHistoryBtn.addEventListener('click', openClearConfirmModal);
+      clearHistoryBtn.addEventListener('click', openDeleteSelectedConfirmModal);
 
       // ----- KHỞI TẠO ỨNG DỤNG -----
       function init() {
         const savedTheme = safeGetStorage(STORAGE_THEME_KEY);
-        applyTheme(savedTheme || 'glass');
+        applyTheme(savedTheme || 'classic');
 
         const savedBg = safeGetStorage(STORAGE_BG_KEY);
         if (savedBg) applyBackground(savedBg);
