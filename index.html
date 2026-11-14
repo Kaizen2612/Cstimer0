@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Rubik's Cube Web Timer — WCA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <!-- =========================================================
+       PHẦN 1: CSS — KHUNG VUÔNG GỌN GÀNG & CÁC GIAO DIỆN CƠ BẢN
+       ========================================================= -->
+  <style>
+    :root {
+      --bg-base: #0b1021;
+      --bg-overlay: radial-gradient(circle at center, rgba(10, 14, 28, 0.22) 0%, rgba(6, 9, 20, 0.55) 100%);
+      --panel-bg: rgba(255, 255, 255, 0.1);
+      --panel-border: rgba(255, 255, 255, 0.22);
+      --panel-blur: 15px;
+      --panel-radius: 16px;
+      --subpanel-bg: rgba(0, 0, 0, 0.22);
+      --subpanel-border: rgba(255, 255, 255, 0.14);
+      --btn-bg: rgba(255, 255, 255, 0.12);
+      --btn-bg-hover: rgba(255, 255, 255, 0.22);
+      --btn-border: rgba(255, 255, 255, 0.26);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.82);
+      --text-muted: rgba(255, 255, 255, 0.62);
+      --state-idle: #ffffff;
+      --state-holding: #ff4d6d;
+      --state-ready: #2ee59d;
+      --state-running: #f8fafc;
+      --shadow-panel: 0 14px 36px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      --shadow-text: 0 2px 10px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.65);
+      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', monospace;
+    }
+
+    /* Giao diện 2: Tối giản (Dark Minimal) */
+    body[data-theme="dark"] {
+      --bg-base: #0f1117;
+      --bg-overlay: rgba(9, 11, 16, 0.62);
+      --panel-bg: rgba(24, 27, 36, 0.88);
+      --panel-border: rgba(255, 255, 255, 0.1);
+      --panel-blur: 10px;
+      --panel-radius: 12px;
+      --subpanel-bg: rgba(15, 17, 23, 0.72);
+      --subpanel-border: rgba(255, 255, 255, 0.08);
+      --btn-bg: rgba(255, 255, 255, 0.08);
+      --btn-bg-hover: rgba(255, 255, 255, 0.16);
+      --btn-border: rgba(255, 255, 255, 0.15);
+      --shadow-panel: 0 10px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Giao diện 3: Sáng (Light Clean) */
+    body[data-theme="light"] {
+      --bg-base: #eef2f7;
+      --bg-overlay: rgba(241, 245, 249, 0.58);
+      --panel-bg: rgba(255, 255, 255, 0.86);
+      --panel-border: rgba(15, 23, 42, 0.12);
+      --panel-blur: 12px;
+      --panel-radius: 12px;
+      --subpanel-bg: rgba(241, 245, 249, 0.9);
+      --subpanel-border: rgba(15, 23, 42, 0.1);
+      --btn-bg: rgba(15, 23, 42, 0.06);
+      --btn-bg-hover: rgba(15, 23, 42, 0.12);
+      --btn-border: rgba(15, 23, 42, 0.16);
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --state-idle: #0f172a;
+      --state-holding: #e11d48;
+      --state-ready: #059669;
+      --state-running: #0f172a;
+      --shadow-panel: 0 10px 28px rgba(15, 23, 42, 0.08);
+      --shadow-text: none;
+    }
+
+    /* Giao diện 4: Cổ điển (WCA Classic) */
+    body[data-theme="classic"] {
+      --bg-base: #111827;
+      --bg-overlay: rgba(17, 24, 39, 0.65);
+      --panel-bg: rgba(31, 41, 55, 0.92);
+      --panel-border: rgba(245, 158, 11, 0.35);
+      --panel-blur: 6px;
+      --panel-radius: 6px;
+      --subpanel-bg: rgba(17, 24, 39, 0.85);
+      --subpanel-border: rgba(255, 255, 255, 0.12);
+      --btn-bg: rgba(245, 158, 11, 0.14);
+      --btn-bg-hover: rgba(245, 158, 11, 0.26);
+      --btn-border: rgba(245, 158, 11, 0.45);
+      --text-primary: #f9fafb;
+      --text-secondary: #e5e7eb;
+      --text-muted: #9ca3af;
+      --state-idle: #f9fafb;
+      --state-holding: #ef4444;
+      --state-ready: #10b981;
+      --state-running: #fde68a;
+      --shadow-panel: 0 8px 20px rgba(0, 0, 0, 0.4);
+      --shadow-text: 0 2px 6px rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100dvh;
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      position: relative;
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(circle at 18% 22%, rgba(99, 102, 241, 0.42) 0%, transparent 48%),
+        radial-gradient(circle at 82% 18%, rgba(236, 72, 153, 0.35) 0%, transparent 45%),
+        radial-gradient(circle at 75% 82%, rgba(20, 184, 166, 0.38) 0%, transparent 50%),
+        linear-gradient(135deg, #090d1a 0%, #141b33 50%, #0d1628 100%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: background-color 0.25s ease, color 0.2s ease;
+    }
+
+    body[data-theme="dark"] {
+      background-image: linear-gradient(160deg, #0f1117 0%, #161b26 100%);
+    }
+
+    body[data-theme="light"] {
+      background-image: linear-gradient(145deg, #e2e8f0 0%, #f8fafc 55%, #e0e7ff 100%);
+    }
+
+    body[data-theme="classic"] {
+      background-image: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--bg-overlay);
+      pointer-events: none;
+      z-index: 0;
+      transition: background 0.25s ease;
+    }
+
+    /* Khung bố cục chính */
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1280px;
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: 20px 24px 24px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "header header"
+        "timer sidebar";
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    /* Hiệu ứng tập trung khi đang giữ/chạy đồng hồ */
+    body.is-timing .panel-box:not(.timer-panel) {
+      opacity: 0.22;
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       KHỐI PANEL HÌNH VUÔNG / CHỮ NHẬT GỌN GÀNG
+       ========================================================= */
+    .panel-box {
+      position: relative;
+      background: var(--panel-bg);
+      backdrop-filter: blur(var(--panel-blur));
+      -webkit-backdrop-filter: blur(var(--panel-blur));
+      border: 1px solid var(--panel-border);
+      border-radius: var(--panel-radius);
+      box-shadow: var(--shadow-panel);
+      transition: opacity 0.22s ease, filter 0.22s ease, background 0.22s ease, border-color 0.22s ease, border-radius 0.22s ease;
+      overflow: hidden;
+    }
+
+    /* =========================================================
+       PANEL 1: HEADER & SCRAMBLE
+       ========================================================= */
+    .header-panel {
+      grid-area: header;
+      padding: 18px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
+      text-shadow: var(--shadow-text);
+    }
+
+    .brand-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      letter-spacing: 0.05em;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .theme-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .glass-select {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 7px 28px 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      outline: none;
+      background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+      background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .glass-select option {
+      background: #1e293b;
+      color: #ffffff;
+    }
+
+    .glass-btn {
+      appearance: none;
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-shadow: var(--shadow-text);
+      transition: background 0.18s ease, transform 0.12s ease;
+    }
+
+    .glass-btn:hover {
+      background: var(--btn-bg-hover);
+      transform: translateY(-1px);
+    }
+
+    .glass-btn:active {
+      transform: scale(0.97);
+    }
+
+    .glass-btn.danger:hover {
+      background: rgba(255, 77, 109, 0.28);
+      border-color: rgba(255, 77, 109, 0.55);
+    }
+
+    .scramble-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 16px;
+      border-radius: calc(var(--panel-radius) - 4px);
+      background: var(--subpanel-bg);
+      border: 1px solid var(--subpanel-border);
+    }
+
+    .scramble-text {
+      font-family: var(--font-mono);
+      font-size: clamp(1.05rem, 2.2vw, 1.42rem);
+      font-weight: 700;
+      line-height: 1.45;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      text-shadow: var(--shadow-text);
+      text-align: center;
+      flex: 1;
+      word-spacing: 0.2em;
+    }
+
+    /* =========================================================
+       PANEL 2: ĐỒNG HỒ WCA (TRUNG TÂM)
+       ========================================================= */
+    .timer-panel {
+      grid-area: timer;
+      min-height: 400px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .timer-status-pill {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text-secondary);
+      text-shadow: var(--shadow-text);
+      margin-bottom: 18px;
+      transition: all 0.18s ease;
+    }
+
+    .timer-display {
+      font-family: var(--font-mono);
+      font-size: clamp(4.2rem, 11vw, 7.6rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      color: var(--state-idle);
+      text-shadow: var(--shadow-text);
+      transition: color 0.12s ease, transform 0.12s ease, text-shadow 0.12s ease;
+    }
+
+    .timer-display.is-holding {
+      color: var(--state-holding);
+      transform: scale(0.97);
+      text-shadow: 0 0 24px rgba(255, 77, 109, 0.55);
+    }
+
+    .timer-display.is-ready {
+      color: var(--state-ready);
+      transform: scale(1.03);
+      text-shadow: 0 0 26px rgba(46, 229, 157, 0.55);
+    }
+
+    .timer-display.is-running {
+      color: var(--state-running);
+    }
+
+    .timer-hint {
+      margin-top: 22px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      text-shadow: var(--shadow-text);
+      max-width: 440px;
+      line-height: 1.5;
+    }
+
+    .quick-penalty-bar {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 36px;
+    }
+
+    /* =========================================================
+       PANEL 3: THỐNG KÊ & LỊCH SỬ GIẢI
+       ========================================================= */
+    .sidebar-panel {
+      grid-area: sidebar;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: calc(100dvh - 165px);
+      min-height: 400px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: var(--subpanel-bg);
+      border: 1px solid var(--subpanel-border);
+      border-radius: calc(var(--panel-radius) - 4px);
+      padding: 11px 14px;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 1.24rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-shadow: var(--shadow-text);
+    }
+
+    .history-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px;
+    }
+
+    .history-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-shadow: var(--shadow-text);
+    }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .history-list::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .history-list::-webkit-scrollbar-thumb {
+      background: var(--btn-border);
+      border-radius: 6px;
+    }
+
+    .history-empty {
+      margin: auto;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      padding: 24px 12px;
+      line-height: 1.5;
+    }
+
+    .solve-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: calc(var(--panel-radius) - 6px);
+      background: var(--subpanel-bg);
+      border: 1px solid var(--subpanel-border);
+      transition: background 0.15s ease;
+    }
+
+    .solve-item:hover {
+      background: var(--btn-bg);
+    }
+
+    .solve-main {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      cursor: pointer;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .solve-index {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      min-width: 26px;
+    }
+
+    .solve-time {
+      font-family: var(--font-mono);
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .solve-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mini-btn {
+      appearance: none;
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 7px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mini-btn:hover {
+      background: var(--btn-bg-hover);
+      color: var(--text-primary);
+    }
+
+    .mini-btn.active-penalty {
+      background: rgba(251, 191, 36, 0.3);
+      border-color: rgba(245, 158, 11, 0.75);
+      color: #f59e0b;
+    }
+
+    .mini-btn.active-dnf {
+      background: rgba(255, 77, 109, 0.28);
+      border-color: rgba(255, 77, 109, 0.75);
+      color: #fb7185;
+    }
+
+    /* =========================================================
+       MODAL & TOAST NỘI BỘ (KHÔNG DÙNG ALERT/CONFIRM)
+       ========================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 18, 0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.is-open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      word-break: break-word;
+    }
+
+    .modal-scramble {
+      font-family: var(--font-mono);
+      background: var(--subpanel-bg);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--subpanel-border);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 60;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    /* =========================================================
+       RESPONSIVE: TABLET & ĐIỆN THOẠI
+       ========================================================= */
+    @media (max-width: 960px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        grid-template-areas:
+          "header"
+          "timer"
+          "sidebar";
+        padding: 14px 14px 24px;
+        gap: 14px;
+      }
+
+      .header-panel {
+        padding: 16px 18px;
+      }
+
+      .timer-panel {
+        min-height: 290px;
+        padding: 28px 20px;
+      }
+
+      .sidebar-panel {
+        max-height: 430px;
+        min-height: 290px;
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .scramble-box {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .timer-panel {
+        min-height: 250px;
+        padding: 24px 16px;
+      }
+
+      .timer-hint {
+        font-size: 0.8rem;
+      }
+
+      .glass-btn, .glass-select {
+        font-size: 0.8rem;
+        padding: 7px 11px;
+      }
+    }
+  </style>
+</head>
+<body data-theme="glass">
+  <!-- =========================================================
+       PHẦN 2: HTML — CẤU TRÚC GIAO DIỆN HÌNH VUÔNG & CHỌN THEME
+       ========================================================= -->
+  <main class="app-shell">
+    <!-- Khối Header & Scramble -->
+    <header class="panel-box header-panel">
+      <div class="top-bar">
+        <div class="brand">
+          <span>Rubik's Timer</span>
+          <span class="brand-badge">WCA 3x3</span>
+        </div>
+        <div class="toolbar">
+          <label class="theme-picker" for="themeSelect">
+            <span>Giao diện:</span>
+            <select id="themeSelect" class="glass-select" aria-label="Chọn giao diện">
+              <option value="glass">Kính mờ (Glass)</option>
+              <option value="dark">Tối giản (Dark)</option>
+              <option value="light">Sáng (Light)</option>
+              <option value="classic">Cổ điển (WCA)</option>
+            </select>
+          </label>
+          <input type="file" id="bgFileInput" class="visually-hidden" accept="image/*" />
+          <button type="button" id="changeBgBtn" class="glass-btn">Đổi hình nền</button>
+          <button type="button" id="resetBgBtn" class="glass-btn" style="display: none;">Nền mặc định</button>
+        </div>
+      </div>
+
+      <div class="scramble-box">
+        <div id="scrambleDisplay" class="scramble-text" aria-live="polite">Đang tạo scramble...</div>
+        <button type="button" id="newScrambleBtn" class="glass-btn" title="Tạo scramble mới">Scramble mới</button>
+      </div>
+    </header>
+
+    <!-- Khối Đồng hồ trung tâm -->
+    <section id="timerZone" class="panel-box timer-panel" aria-label="Khu vực bấm giờ Rubik">
+      <div id="timerStatus" class="timer-status-pill">Sẵn sàng</div>
+      <div id="timerDisplay" class="timer-display">0.00</div>
+      <p id="timerHint" class="timer-hint">
+        Giữ phím <strong>Space</strong> (hoặc chạm giữ màn hình) 0.5 giây đến khi chuyển xanh, thả để bắt đầu.
+      </p>
+      <div id="quickPenaltyBar" class="quick-penalty-bar"></div>
+    </section>
+
+    <!-- Khối Thống kê & Lịch sử -->
+    <aside class="panel-box sidebar-panel" aria-label="Thống kê và lịch sử giải">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Ao5 (Hiện tại)</div>
+          <div id="statAo5" class="stat-value">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Ao12 (Hiện tại)</div>
+          <div id="statAo12" class="stat-value">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tốt nhất (PB)</div>
+          <div id="statBest" class="stat-value">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Số lần giải</div>
+          <div id="statCount" class="stat-value">0</div>
+        </div>
+      </div>
+
+      <div class="history-header">
+        <span class="history-title">Lịch sử giải</span>
+        <button type="button" id="clearHistoryBtn" class="glass-btn danger">Xóa tất cả</button>
+      </div>
+
+      <div id="historyList" class="history-list"></div>
+    </aside>
+  </main>
+
+  <!-- Modal chi tiết / xác nhận nội bộ -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="panel-box modal-card">
+      <h2 id="modalTitle" class="modal-title">Thông báo</h2>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <!-- Thông báo Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- =========================================================
+       PHẦN 3: VANILLA JAVASCRIPT — LOGIC WCA, SCRAMBLE & THEME
+       ========================================================= -->
+  <script>
+    (() => {
+      'use strict';
+
+      // ----- HẰNG SỐ LƯU TRỮ & TRẠNG THÁI -----
+      const STORAGE_SOLVES_KEY = 'wca_rubik_solves_v1';
+      const STORAGE_BG_KEY = 'wca_rubik_bg_v1';
+      const STORAGE_THEME_KEY = 'wca_rubik_theme_v1';
+      const HOLD_DURATION_MS = 500;
+
+      const TIMER_STATE = {
+        IDLE: 'IDLE',
+        HOLDING: 'HOLDING',
+        READY: 'READY',
+        RUNNING: 'RUNNING'
+      };
+
+      // ----- DOM ELEMENTS -----
+      const themeSelectEl = document.getElementById('themeSelect');
+      const scrambleDisplayEl = document.getElementById('scrambleDisplay');
+      const newScrambleBtn = document.getElementById('newScrambleBtn');
+      const changeBgBtn = document.getElementById('changeBgBtn');
+      const resetBgBtn = document.getElementById('resetBgBtn');
+      const bgFileInput = document.getElementById('bgFileInput');
+
+      const timerZoneEl = document.getElementById('timerZone');
+      const timerStatusEl = document.getElementById('timerStatus');
+      const timerDisplayEl = document.getElementById('timerDisplay');
+      const quickPenaltyBarEl = document.getElementById('quickPenaltyBar');
+
+      const statAo5El = document.getElementById('statAo5');
+      const statAo12El = document.getElementById('statAo12');
+      const statBestEl = document.getElementById('statBest');
+      const statCountEl = document.getElementById('statCount');
+      const historyListEl = document.getElementById('historyList');
+      const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+      const modalBackdropEl = document.getElementById('modalBackdrop');
+      const modalTitleEl = document.getElementById('modalTitle');
+      const modalBodyEl = document.getElementById('modalBody');
+      const modalActionsEl = document.getElementById('modalActions');
+      const toastEl = document.getElementById('toast');
+
+      // ----- BIẾN TRẠNG THÁI ỨNG DỤNG -----
+      let state = TIMER_STATE.IDLE;
+      let holdTimeoutId = null;
+      let rafId = null;
+      let startTimeMs = 0;
+      let justStopped = false;
+      let activePointerId = null;
+      let currentScramble = '';
+      let solves = [];
+      let toastTimeoutId = null;
+
+      // ----- TIỆN ÍCH AN TOÀN LOCALSTORAGE & TOAST -----
+      function safeGetStorage(key) {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function safeSetStorage(key, value) {
+        try {
+          window.localStorage.setItem(key, value);
+          return { ok: true };
+        } catch (err) {
+          return { ok: false, error: err };
+        }
+      }
+
+      function safeRemoveStorage(key) {
+        try {
+          window.localStorage.removeItem(key);
+        } catch (err) {
+          // Bỏ qua nếu trình duyệt chặn storage
+        }
+      }
+
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('is-visible');
+        if (toastTimeoutId) clearTimeout(toastTimeoutId);
+        toastTimeoutId = setTimeout(() => {
+          toastEl.classList.remove('is-visible');
+        }, 3200);
+      }
+
+      // ----- 0. QUẢN LÝ GIAO DIỆN CƠ BẢN -----
+      function applyTheme(themeName) {
+        const validThemes = ['glass', 'dark', 'light', 'classic'];
+        const chosen = validThemes.includes(themeName) ? themeName : 'glass';
+        document.body.setAttribute('data-theme', chosen);
+        themeSelectEl.value = chosen;
+        safeSetStorage(STORAGE_THEME_KEY, chosen);
+      }
+
+      themeSelectEl.addEventListener('change', (e) => {
+        applyTheme(e.target.value);
+        themeSelectEl.blur();
+      });
+
+      // ----- 1. ĐỊNH DẠNG THỜI GIAN & TÍNH TOÁN WCA -----
+      function formatTime(ms) {
+        if (ms === Infinity) return 'DNF';
+        const totalCentiseconds = Math.floor(ms / 10);
+        const cs = totalCentiseconds % 100;
+        const totalSeconds = Math.floor(totalCentiseconds / 100);
+        const seconds = totalSeconds % 60;
+        const minutes = Math.floor(totalSeconds / 60);
+
+        const csStr = String(cs).padStart(2, '0');
+        if (minutes > 0) {
+          return `${minutes}:${String(seconds).padStart(2, '0')}.${csStr}`;
+        }
+        return `${seconds}.${csStr}`;
+      }
+
+      function getEffectiveTime(solve) {
+        if (solve.penalty === 'DNF') return Infinity;
+        if (solve.penalty === '+2') return solve.timeMs + 2000;
+        return solve.timeMs;
+      }
+
+      function formatSolveDisplay(solve) {
+        if (solve.penalty === 'DNF') return 'DNF';
+        if (solve.penalty === '+2') return `${formatTime(solve.timeMs + 2000)}+`;
+        return formatTime(solve.timeMs);
+      }
+
+      function calculateWCAAverage(solveList, windowSize) {
+        if (solveList.length < windowSize) return null;
+        const recent = solveList.slice(0, windowSize).map(getEffectiveTime);
+        const sorted = [...recent].sort((a, b) => a - b);
+
+        const trimmed = sorted.slice(1, windowSize - 1);
+        if (trimmed.some((t) => t === Infinity)) {
+          return Infinity;
+        }
+        const sum = trimmed.reduce((acc, val) => acc + val, 0);
+        return sum / trimmed.length;
+      }
+
+      // ----- 2. BỘ SINH SCRAMBLE 3x3 CHUẨN WCA (20-22 MOVES) -----
+      function generateScramble() {
+        const faces = ['U', 'D', 'L', 'R', 'F', 'B'];
+        const axisMap = { U: 0, D: 0, L: 1, R: 1, F: 2, B: 2 };
+        const modifiers = ['', "'", '2'];
+        const length = 20 + Math.floor(Math.random() * 3);
+
+        const moves = [];
+        let prevFace = null;
+        let prevAxis = null;
+        let prev2Axis = null;
+
+        for (let i = 0; i < length; i++) {
+          const candidates = faces.filter((face) => {
+            if (face === prevFace) return false;
+            if (prevAxis !== null && prev2Axis !== null && prevAxis === prev2Axis && axisMap[face] === prevAxis) {
+              return false;
+            }
+            return true;
+          });
+
+          const chosenFace = candidates[Math.floor(Math.random() * candidates.length)];
+          const chosenMod = modifiers[Math.floor(Math.random() * modifiers.length)];
+
+          moves.push(chosenFace + chosenMod);
+
+          prev2Axis = prevAxis;
+          prevAxis = axisMap[chosenFace];
+          prevFace = chosenFace;
+        }
+
+        currentScramble = moves.join(' ');
+        scrambleDisplayEl.textContent = currentScramble;
+      }
+
+      // ----- 3. CƠ CHẾ ĐỒNG HỒ CHUẨN WCA (Date.now + requestAnimationFrame) -----
+      function setTimerVisual(newState) {
+        timerDisplayEl.classList.remove('is-holding', 'is-ready', 'is-running');
+        document.body.classList.remove('is-timing');
+
+        if (newState === TIMER_STATE.HOLDING) {
+          timerDisplayEl.classList.add('is-holding');
+          timerStatusEl.textContent = 'Đang giữ...';
+          document.body.classList.add('is-timing');
+        } else if (newState === TIMER_STATE.READY) {
+          timerDisplayEl.classList.add('is-ready');
+          timerStatusEl.textContent = 'Sẵn sàng! (Thả ra)';
+          document.body.classList.add('is-timing');
+        } else if (newState === TIMER_STATE.RUNNING) {
+          timerDisplayEl.classList.add('is-running');
+          timerStatusEl.textContent = 'Đang giải...';
+          document.body.classList.add('is-timing');
+        } else {
+          timerStatusEl.textContent = 'Sẵn sàng';
+        }
+      }
+
+      function startHold() {
+        if (state !== TIMER_STATE.IDLE || modalBackdropEl.classList.contains('is-open')) return;
+        state = TIMER_STATE.HOLDING;
+        setTimerVisual(state);
+
+        holdTimeoutId = setTimeout(() => {
+          if (state === TIMER_STATE.HOLDING) {
+            state = TIMER_STATE.READY;
+            setTimerVisual(state);
+            if (navigator.vibrate) {
+              try { navigator.vibrate(18); } catch (_) {}
+            }
+          }
+        }, HOLD_DURATION_MS);
+      }
+
+      function cancelOrStartOnRelease() {
+        if (state === TIMER_STATE.HOLDING) {
+          clearTimeout(holdTimeoutId);
+          holdTimeoutId = null;
+          state = TIMER_STATE.IDLE;
+          setTimerVisual(state);
+        } else if (state === TIMER_STATE.READY) {
+          clearTimeout(holdTimeoutId);
+          holdTimeoutId = null;
+          startTimer();
+        }
+      }
+
+      function updateTimerFrame() {
+        if (state !== TIMER_STATE.RUNNING) return;
+        const elapsed = Date.now() - startTimeMs;
+        timerDisplayEl.textContent = formatTime(elapsed);
+        rafId = requestAnimationFrame(updateTimerFrame);
+      }
+
+      function startTimer() {
+        state = TIMER_STATE.RUNNING;
+        startTimeMs = Date.now();
+        setTimerVisual(state);
+        quickPenaltyBarEl.innerHTML = '';
+        rafId = requestAnimationFrame(updateTimerFrame);
+      }
+
+      function stopTimer() {
+        if (state !== TIMER_STATE.RUNNING) return;
+        const finalMs = Date.now() - startTimeMs;
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+
+        state = TIMER_STATE.IDLE;
+        justStopped = true;
+        setTimerVisual(state);
+        timerDisplayEl.textContent = formatTime(finalMs);
+
+        const newSolve = {
+          id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+          timeMs: finalMs,
+          penalty: null,
+          scramble: currentScramble,
+          createdAt: new Date().toISOString()
+        };
+
+        solves.unshift(newSolve);
+        saveSolves();
+        renderAllStatsAndHistory();
+        generateScramble();
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (modalBackdropEl.classList.contains('is-open')) {
+          if (e.key === 'Escape') closeModal();
+          return;
+        }
+
+        if (state === TIMER_STATE.RUNNING) {
+          e.preventDefault();
+          stopTimer();
+          return;
+        }
+
+        if (e.code === 'Space') {
+          if (document.activeElement && (document.activeElement.tagName === 'BUTTON' || document.activeElement.tagName === 'SELECT')) {
+            document.activeElement.blur();
+          }
+          e.preventDefault();
+          if (e.repeat || justStopped) return;
+          startHold();
+        }
+      });
+
+      document.addEventListener('keyup', (e) => {
+        if (e.code === 'Space') {
+          e.preventDefault();
+          if (justStopped) {
+            justStopped = false;
+            return;
+          }
+          cancelOrStartOnRelease();
+        } else {
+          justStopped = false;
+        }
+      });
+
+      document.addEventListener('pointerdown', (e) => {
+        if (state === TIMER_STATE.RUNNING) {
+          e.preventDefault();
+          stopTimer();
+        }
+      }, { capture: true });
+
+      timerZoneEl.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('button, a, input, label, select')) return;
+        if (state === TIMER_STATE.RUNNING || justStopped) return;
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+
+        activePointerId = e.pointerId;
+        startHold();
+      });
+
+      window.addEventListener('pointerup', (e) => {
+        if (justStopped) {
+          justStopped = false;
+          activePointerId = null;
+          return;
+        }
+        if (activePointerId !== null && e.pointerId === activePointerId) {
+          activePointerId = null;
+          cancelOrStartOnRelease();
+        }
+      });
+
+      window.addEventListener('pointercancel', (e) => {
+        if (activePointerId !== null && e.pointerId === activePointerId) {
+          activePointerId = null;
+          if (state === TIMER_STATE.HOLDING || state === TIMER_STATE.READY) {
+            clearTimeout(holdTimeoutId);
+            state = TIMER_STATE.IDLE;
+            setTimerVisual(state);
+          }
+        }
+      });
+
+      // ----- 4. LỊCH SỬ, THỐNG KÊ & MODAL -----
+      function saveSolves() {
+        const res = safeSetStorage(STORAGE_SOLVES_KEY, JSON.stringify(solves));
+        if (!res.ok) {
+          showToast('Bộ nhớ trình duyệt đã đầy, không thể lưu thêm lịch sử.');
+        }
+      }
+
+      function loadSolves() {
+        const raw = safeGetStorage(STORAGE_SOLVES_KEY);
+        if (!raw) return;
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            solves = parsed;
+          }
+        } catch (_) {
+          solves = [];
+        }
+      }
+
+      function togglePenalty(solveId, type) {
+        const target = solves.find((s) => s.id === solveId);
+        if (!target) return;
+        target.penalty = target.penalty === type ? null : type;
+        saveSolves();
+        renderAllStatsAndHistory();
+        if (solves[0] && solves[0].id === solveId) {
+          timerDisplayEl.textContent = formatSolveDisplay(solves[0]);
+        }
+      }
+
+      function deleteSolve(solveId) {
+        solves = solves.filter((s) => s.id !== solveId);
+        saveSolves();
+        renderAllStatsAndHistory();
+        if (solves.length === 0) {
+          timerDisplayEl.textContent = '0.00';
+        }
+      }
+
+      function renderQuickPenaltyBar() {
+        quickPenaltyBarEl.innerHTML = '';
+        if (solves.length === 0) return;
+
+        const latest = solves[0];
+        const btnPlus2 = document.createElement('button');
+        btnPlus2.type = 'button';
+        btnPlus2.className = `mini-btn ${latest.penalty === '+2' ? 'active-penalty' : ''}`;
+        btnPlus2.textContent = '+2';
+        btnPlus2.addEventListener('click', () => togglePenalty(latest.id, '+2'));
+
+        const btnDnf = document.createElement('button');
+        btnDnf.type = 'button';
+        btnDnf.className = `mini-btn ${latest.penalty === 'DNF' ? 'active-dnf' : ''}`;
+        btnDnf.textContent = 'DNF';
+        btnDnf.addEventListener('click', () => togglePenalty(latest.id, 'DNF'));
+
+        const btnDel = document.createElement('button');
+        btnDel.type = 'button';
+        btnDel.className = 'mini-btn';
+        btnDel.textContent = 'Xóa lần vừa rồi';
+        btnDel.addEventListener('click', () => deleteSolve(latest.id));
+
+        quickPenaltyBarEl.append(btnPlus2, btnDnf, btnDel);
+      }
+
+      function renderAllStatsAndHistory() {
+        statCountEl.textContent = String(solves.length);
+
+        const ao5 = calculateWCAAverage(solves, 5);
+        statAo5El.textContent = ao5 === null ? '--' : formatTime(ao5);
+
+        const ao12 = calculateWCAAverage(solves, 12);
+        statAo12El.textContent = ao12 === null ? '--' : formatTime(ao12);
+
+        const validTimes = solves.map(getEffectiveTime).filter((t) => t !== Infinity);
+        statBestEl.textContent = validTimes.length > 0 ? formatTime(Math.min(...validTimes)) : '--';
+
+        renderQuickPenaltyBar();
+
+        historyListEl.innerHTML = '';
+        if (solves.length === 0) {
+          const emptyEl = document.createElement('div');
+          emptyEl.className = 'history-empty';
+          emptyEl.textContent = 'Chưa có lần giải nào. Nhấn giữ Space hoặc chạm màn hình để bắt đầu!';
+          historyListEl.appendChild(emptyEl);
+          return;
+        }
+
+        const total = solves.length;
+        solves.forEach((solve, idx) => {
+          const row = document.createElement('div');
+          row.className = 'solve-item';
+
+          const main = document.createElement('div');
+          main.className = 'solve-main';
+          main.title = 'Nhấn để xem chi tiết scramble';
+          main.addEventListener('click', () => openSolveDetailModal(solve, total - idx));
+
+          const numSpan = document.createElement('span');
+          numSpan.className = 'solve-index';
+          numSpan.textContent = `#${total - idx}`;
+
+          const timeSpan = document.createElement('span');
+          timeSpan.className = 'solve-time';
+          timeSpan.textContent = formatSolveDisplay(solve);
+
+          main.append(numSpan, timeSpan);
+
+          const actions = document.createElement('div');
+          actions.className = 'solve-actions';
+
+          const p2Btn = document.createElement('button');
+          p2Btn.type = 'button';
+          p2Btn.className = `mini-btn ${solve.penalty === '+2' ? 'active-penalty' : ''}`;
+          p2Btn.textContent = '+2';
+          p2Btn.addEventListener('click', () => togglePenalty(solve.id, '+2'));
+
+          const dnfBtn = document.createElement('button');
+          dnfBtn.type = 'button';
+          dnfBtn.className = `mini-btn ${solve.penalty === 'DNF' ? 'active-dnf' : ''}`;
+          dnfBtn.textContent = 'DNF';
+          dnfBtn.addEventListener('click', () => togglePenalty(solve.id, 'DNF'));
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'mini-btn';
+          delBtn.textContent = '×';
+          delBtn.title = 'Xóa lần giải này';
+          delBtn.addEventListener('click', () => deleteSolve(solve.id));
+
+          actions.append(p2Btn, dnfBtn, delBtn);
+          row.append(main, actions);
+          historyListEl.appendChild(row);
+        });
+      }
+
+      function closeModal() {
+        modalBackdropEl.classList.remove('is-open');
+      }
+
+      function openSolveDetailModal(solve, orderNum) {
+        modalTitleEl.textContent = `Lần giải #${orderNum} — ${formatSolveDisplay(solve)}`;
+        modalBodyEl.innerHTML = '';
+
+        const timeP = document.createElement('p');
+        const dateLabel = solve.createdAt
+          ? new Date(solve.createdAt).toLocaleString('vi-VN')
+          : 'Không rõ thời gian';
+        timeP.textContent = `Thời điểm: ${dateLabel}`;
+
+        const scrambleBox = document.createElement('div');
+        scrambleBox.className = 'modal-scramble';
+        scrambleBox.textContent = solve.scramble || 'Không có scramble';
+
+        modalBodyEl.append(timeP, scrambleBox);
+        modalActionsEl.innerHTML = '';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'glass-btn';
+        closeBtn.textContent = 'Đóng';
+        closeBtn.addEventListener('click', closeModal);
+        modalActionsEl.appendChild(closeBtn);
+
+        modalBackdropEl.classList.add('is-open');
+      }
+
+      function openClearConfirmModal() {
+        if (solves.length === 0) {
+          showToast('Lịch sử đang trống.');
+          return;
+        }
+        modalTitleEl.textContent = 'Xóa toàn bộ lịch sử?';
+        modalBodyEl.textContent = `Bạn có chắc muốn xóa tất cả ${solves.length} lần giải và đặt lại thống kê Ao5 / Ao12? Hành động này không thể hoàn tác.`;
+        modalActionsEl.innerHTML = '';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'glass-btn';
+        cancelBtn.textContent = 'Hủy';
+        cancelBtn.addEventListener('click', closeModal);
+
+        const confirmBtn = document.createElement('button');
+        confirmBtn.type = 'button';
+        confirmBtn.className = 'glass-btn danger';
+        confirmBtn.textContent = 'Xóa tất cả';
+        confirmBtn.addEventListener('click', () => {
+          solves = [];
+          saveSolves();
+          renderAllStatsAndHistory();
+          timerDisplayEl.textContent = '0.00';
+          closeModal();
+          showToast('Đã xóa toàn bộ lịch sử giải.');
+        });
+
+        modalActionsEl.append(cancelBtn, confirmBtn);
+        modalBackdropEl.classList.add('is-open');
+      }
+
+      modalBackdropEl.addEventListener('click', (e) => {
+        if (e.target === modalBackdropEl) closeModal();
+      });
+
+      // ----- 5. ĐỔI HÌNH NỀN & NÉN ẢNH BẰNG CANVAS API -----
+      function applyBackground(dataUrl) {
+        if (dataUrl) {
+          document.body.style.backgroundImage = `url("${dataUrl}")`;
+          resetBgBtn.style.display = 'inline-flex';
+        } else {
+          document.body.style.backgroundImage = '';
+          resetBgBtn.style.display = 'none';
+        }
+      }
+
+      function compressImageWithCanvas(img, maxDim, quality) {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+
+        if (width > maxDim || height > maxDim) {
+          if (width >= height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        return canvas.toDataURL('image/jpeg', quality);
+      }
+
+      function handleBackgroundUpload(file) {
+        if (!file || !file.type.startsWith('image/')) {
+          showToast('Vui lòng chọn tệp hình ảnh hợp lệ.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const profiles = [
+              { maxDim: 1600, quality: 0.82 },
+              { maxDim: 1400, quality: 0.72 },
+              { maxDim: 1200, quality: 0.62 },
+              { maxDim: 960, quality: 0.52 }
+            ];
+
+            let saved = false;
+            for (const profile of profiles) {
+              const dataUrl = compressImageWithCanvas(img, profile.maxDim, profile.quality);
+              if (dataUrl.length > 2200000 && profile !== profiles[profiles.length - 1]) {
+                continue;
+              }
+              const result = safeSetStorage(STORAGE_BG_KEY, dataUrl);
+              if (result.ok) {
+                applyBackground(dataUrl);
+                showToast('Đã cập nhật và lưu hình nền!');
+                saved = true;
+                break;
+              }
+            }
+
+            if (!saved) {
+              showToast('Ảnh quá lớn vượt giới hạn bộ nhớ trình duyệt. Hãy thử ảnh khác nhẹ hơn.');
+            }
+          };
+          img.onerror = () => showToast('Không thể đọc tệp ảnh này.');
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      changeBgBtn.addEventListener('click', () => bgFileInput.click());
+
+      bgFileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) handleBackgroundUpload(file);
+        bgFileInput.value = '';
+      });
+
+      resetBgBtn.addEventListener('click', () => {
+        safeRemoveStorage(STORAGE_BG_KEY);
+        applyBackground(null);
+        showToast('Đã khôi phục hình nền mặc định.');
+      });
+
+      newScrambleBtn.addEventListener('click', () => {
+        generateScramble();
+        newScrambleBtn.blur();
+      });
+
+      clearHistoryBtn.addEventListener('click', openClearConfirmModal);
+
+      // ----- KHỞI TẠO ỨNG DỤNG -----
+      function init() {
+        const savedTheme = safeGetStorage(STORAGE_THEME_KEY);
+        applyTheme(savedTheme || 'glass');
+
+        const savedBg = safeGetStorage(STORAGE_BG_KEY);
+        if (savedBg) applyBackground(savedBg);
+
+        loadSolves();
+        renderAllStatsAndHistory();
+        generateScramble();
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
