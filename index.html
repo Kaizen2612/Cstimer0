@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
 
   <!-- =========================================================
-       PHẦN 1: CSS — KHUNG VUÔNG GỌN GÀNG & CÁC GIAO DIỆN CƠ BẢN
+       PHẦN 1: CSS — KHUNG VUÔNG, CÁC GIAO DIỆN & QUẢN LÝ DANH SÁCH
        ========================================================= -->
   <style>
     :root {
@@ -155,7 +155,6 @@
       transition: background 0.25s ease;
     }
 
-    /* Khung bố cục chính */
     .app-shell {
       position: relative;
       z-index: 1;
@@ -165,7 +164,7 @@
       margin: 0 auto;
       padding: 20px 24px 24px;
       display: grid;
-      grid-template-columns: 1fr 360px;
+      grid-template-columns: 1fr 375px;
       grid-template-rows: auto 1fr;
       grid-template-areas:
         "header header"
@@ -174,16 +173,12 @@
       align-items: stretch;
     }
 
-    /* Hiệu ứng tập trung khi đang giữ/chạy đồng hồ */
     body.is-timing .panel-box:not(.timer-panel) {
       opacity: 0.22;
       filter: blur(2px);
       pointer-events: none;
     }
 
-    /* =========================================================
-       KHỐI PANEL HÌNH VUÔNG / CHỮ NHẬT GỌN GÀNG
-       ========================================================= */
     .panel-box {
       position: relative;
       background: var(--panel-bg);
@@ -274,20 +269,37 @@
       color: #ffffff;
     }
 
+    .glass-input {
+      width: 100%;
+      border: 1px solid var(--btn-border);
+      background: var(--subpanel-bg);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      padding: 10px 12px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .glass-input:focus {
+      border-color: #38bdf8;
+    }
+
     .glass-btn {
       appearance: none;
       border: 1px solid var(--btn-border);
       background: var(--btn-bg);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      padding: 8px 14px;
+      padding: 7px 12px;
       border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 5px;
       text-shadow: var(--shadow-text);
       transition: background 0.18s ease, transform 0.12s ease;
     }
@@ -304,6 +316,15 @@
     .glass-btn.danger:hover {
       background: rgba(255, 77, 109, 0.28);
       border-color: rgba(255, 77, 109, 0.55);
+    }
+
+    .glass-btn.primary {
+      background: rgba(46, 229, 157, 0.2);
+      border-color: rgba(46, 229, 157, 0.5);
+    }
+
+    .glass-btn.primary:hover {
+      background: rgba(46, 229, 157, 0.32);
     }
 
     .scramble-box {
@@ -409,33 +430,75 @@
     }
 
     /* =========================================================
-       PANEL 3: THỐNG KÊ & LỊCH SỬ GIẢI
+       PANEL 3: DANH SÁCH LẦN GIẢI (SESSIONS), THỐNG KÊ & LỊCH SỬ
        ========================================================= */
     .sidebar-panel {
       grid-area: sidebar;
-      padding: 20px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       max-height: calc(100dvh - 165px);
-      min-height: 400px;
+      min-height: 420px;
+    }
+
+    .session-manager {
+      background: var(--subpanel-bg);
+      border: 1px solid var(--subpanel-border);
+      border-radius: calc(var(--panel-radius) - 4px);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .session-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .session-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .session-select {
+      width: 100%;
+    }
+
+    .session-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .session-actions .glass-btn {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 0.76rem;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 8px;
     }
 
     .stat-card {
       background: var(--subpanel-bg);
       border: 1px solid var(--subpanel-border);
       border-radius: calc(var(--panel-radius) - 4px);
-      padding: 11px 14px;
+      padding: 10px 12px;
     }
 
     .stat-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -443,9 +506,9 @@
     }
 
     .stat-value {
-      margin-top: 4px;
+      margin-top: 3px;
       font-family: var(--font-mono);
-      font-size: 1.24rem;
+      font-size: 1.18rem;
       font-weight: 700;
       color: var(--text-primary);
       text-shadow: var(--shadow-text);
@@ -455,13 +518,26 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 6px;
       padding: 0 2px;
+      flex-wrap: wrap;
     }
 
     .history-title {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 700;
       text-shadow: var(--shadow-text);
+    }
+
+    .history-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .history-tools .glass-btn {
+      padding: 5px 9px;
+      font-size: 0.75rem;
     }
 
     .history-list {
@@ -470,7 +546,7 @@
       padding-right: 4px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
     }
 
     .history-list::-webkit-scrollbar {
@@ -485,9 +561,9 @@
     .history-empty {
       margin: auto;
       text-align: center;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
-      padding: 24px 12px;
+      padding: 20px 10px;
       line-height: 1.5;
     }
 
@@ -496,7 +572,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 9px 12px;
+      padding: 8px 11px;
       border-radius: calc(var(--panel-radius) - 6px);
       background: var(--subpanel-bg);
       border: 1px solid var(--subpanel-border);
@@ -517,7 +593,7 @@
     }
 
     .solve-index {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
       min-width: 26px;
@@ -525,7 +601,7 @@
 
     .solve-time {
       font-family: var(--font-mono);
-      font-size: 1.02rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text-primary);
     }
@@ -568,12 +644,12 @@
     }
 
     /* =========================================================
-       MODAL & TOAST NỘI BỘ (KHÔNG DÙNG ALERT/CONFIRM)
+       MODAL & TOAST NỘI BỘ (KHÔNG DÙNG ALERT/CONFIRM/PROMPT)
        ========================================================= */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(4, 7, 18, 0.6);
+      background: rgba(4, 7, 18, 0.65);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       z-index: 50;
@@ -589,23 +665,26 @@
 
     .modal-card {
       width: 100%;
-      max-width: 420px;
-      padding: 24px;
+      max-width: 440px;
+      padding: 22px 24px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
     .modal-title {
-      font-size: 1.08rem;
+      font-size: 1.06rem;
       font-weight: 700;
     }
 
     .modal-body {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.55;
       color: var(--text-secondary);
       word-break: break-word;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .modal-scramble {
@@ -615,15 +694,20 @@
       border-radius: 8px;
       border: 1px solid var(--subpanel-border);
       color: var(--text-primary);
-      font-size: 0.9rem;
-      margin-top: 8px;
+      font-size: 0.88rem;
+      max-height: 220px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .modal-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 8px;
       margin-top: 4px;
+      flex-wrap: wrap;
     }
 
     .toast {
@@ -631,7 +715,7 @@
       bottom: 22px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.92);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.22);
@@ -683,14 +767,14 @@
       }
 
       .timer-panel {
-        min-height: 290px;
+        min-height: 280px;
         padding: 28px 20px;
       }
 
       .sidebar-panel {
-        max-height: 430px;
-        min-height: 290px;
-        padding: 18px;
+        max-height: 520px;
+        min-height: 320px;
+        padding: 16px;
       }
     }
 
@@ -701,7 +785,7 @@
       }
 
       .timer-panel {
-        min-height: 250px;
+        min-height: 240px;
         padding: 24px 16px;
       }
 
@@ -710,15 +794,15 @@
       }
 
       .glass-btn, .glass-select {
-        font-size: 0.8rem;
-        padding: 7px 11px;
+        font-size: 0.78rem;
+        padding: 7px 10px;
       }
     }
   </style>
 </head>
 <body data-theme="glass">
   <!-- =========================================================
-       PHẦN 2: HTML — CẤU TRÚC GIAO DIỆN HÌNH VUÔNG & CHỌN THEME
+       PHẦN 2: HTML — CẤU TRÚC GIAO DIỆN & QUẢN LÝ DANH SÁCH GIẢI
        ========================================================= -->
   <main class="app-shell">
     <!-- Khối Header & Scramble -->
@@ -760,8 +844,22 @@
       <div id="quickPenaltyBar" class="quick-penalty-bar"></div>
     </section>
 
-    <!-- Khối Thống kê & Lịch sử -->
-    <aside class="panel-box sidebar-panel" aria-label="Thống kê và lịch sử giải">
+    <!-- Khối Quản lý Danh sách (Sessions), Thống kê & Lịch sử -->
+    <aside class="panel-box sidebar-panel" aria-label="Danh sách lần giải và thống kê">
+      <!-- Quản lý danh sách / phiên giải -->
+      <div class="session-manager">
+        <div class="session-top">
+          <span class="session-label">Danh sách giải (Session)</span>
+        </div>
+        <select id="sessionSelect" class="glass-select session-select" aria-label="Chọn danh sách lần giải"></select>
+        <div class="session-actions">
+          <button type="button" id="newSessionBtn" class="glass-btn primary">+ Tạo danh sách</button>
+          <button type="button" id="renameSessionBtn" class="glass-btn">Đổi tên</button>
+          <button type="button" id="deleteSessionBtn" class="glass-btn danger">Xóa DS</button>
+        </div>
+      </div>
+
+      <!-- Thống kê của danh sách đang chọn -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-label">Ao5 (Hiện tại)</div>
@@ -781,16 +879,21 @@
         </div>
       </div>
 
+      <!-- Tiêu đề lịch sử + nhập tay + xuất danh sách -->
       <div class="history-header">
-        <span class="history-title">Lịch sử giải</span>
-        <button type="button" id="clearHistoryBtn" class="glass-btn danger">Xóa tất cả</button>
+        <span class="history-title">Các lần giải</span>
+        <div class="history-tools">
+          <button type="button" id="addManualSolveBtn" class="glass-btn" title="Nhập thời gian thủ công">+ Nhập giờ</button>
+          <button type="button" id="exportListBtn" class="glass-btn" title="Xem và sao chép danh sách">Xuất DS</button>
+          <button type="button" id="clearHistoryBtn" class="glass-btn danger" title="Làm trống danh sách hiện tại">Xóa tất cả</button>
+        </div>
       </div>
 
       <div id="historyList" class="history-list"></div>
     </aside>
   </main>
 
-  <!-- Modal chi tiết / xác nhận nội bộ -->
+  <!-- Modal đa năng nội bộ -->
   <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="panel-box modal-card">
       <h2 id="modalTitle" class="modal-title">Thông báo</h2>
@@ -803,14 +906,16 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <!-- =========================================================
-       PHẦN 3: VANILLA JAVASCRIPT — LOGIC WCA, SCRAMBLE & THEME
+       PHẦN 3: VANILLA JAVASCRIPT — WCA TIMER, SESSIONS & EXPORT
        ========================================================= -->
   <script>
     (() => {
       'use strict';
 
       // ----- HẰNG SỐ LƯU TRỮ & TRẠNG THÁI -----
-      const STORAGE_SOLVES_KEY = 'wca_rubik_solves_v1';
+      const STORAGE_SESSIONS_KEY = 'wca_rubik_sessions_v2';
+      const STORAGE_ACTIVE_SESSION_KEY = 'wca_rubik_active_session_v2';
+      const LEGACY_SOLVES_KEY = 'wca_rubik_solves_v1';
       const STORAGE_BG_KEY = 'wca_rubik_bg_v1';
       const STORAGE_THEME_KEY = 'wca_rubik_theme_v1';
       const HOLD_DURATION_MS = 500;
@@ -835,11 +940,18 @@
       const timerDisplayEl = document.getElementById('timerDisplay');
       const quickPenaltyBarEl = document.getElementById('quickPenaltyBar');
 
+      const sessionSelectEl = document.getElementById('sessionSelect');
+      const newSessionBtn = document.getElementById('newSessionBtn');
+      const renameSessionBtn = document.getElementById('renameSessionBtn');
+      const deleteSessionBtn = document.getElementById('deleteSessionBtn');
+
       const statAo5El = document.getElementById('statAo5');
       const statAo12El = document.getElementById('statAo12');
       const statBestEl = document.getElementById('statBest');
       const statCountEl = document.getElementById('statCount');
       const historyListEl = document.getElementById('historyList');
+      const addManualSolveBtn = document.getElementById('addManualSolveBtn');
+      const exportListBtn = document.getElementById('exportListBtn');
       const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
       const modalBackdropEl = document.getElementById('modalBackdrop');
@@ -856,10 +968,11 @@
       let justStopped = false;
       let activePointerId = null;
       let currentScramble = '';
-      let solves = [];
+      let sessions = [];
+      let activeSessionId = '';
       let toastTimeoutId = null;
 
-      // ----- TIỆN ÍCH AN TOÀN LOCALSTORAGE & TOAST -----
+      // ----- TIỆN ÍCH LOCALSTORAGE, COPY & TOAST -----
       function safeGetStorage(key) {
         try {
           return window.localStorage.getItem(key);
@@ -882,6 +995,34 @@
           window.localStorage.removeItem(key);
         } catch (err) {
           // Bỏ qua nếu trình duyệt chặn storage
+        }
+      }
+
+      function copyTextToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(
+            () => showToast('Đã sao chép danh sách vào bộ nhớ tạm!'),
+            () => fallbackCopy(text)
+          );
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('Đã sao chép danh sách vào bộ nhớ tạm!');
+        } catch (_) {
+          showToast('Không thể tự sao chép, bạn hãy bôi đen và copy thủ công nhé.');
         }
       }
 
@@ -908,7 +1049,348 @@
         themeSelectEl.blur();
       });
 
-      // ----- 1. ĐỊNH DẠNG THỜI GIAN & TÍNH TOÁN WCA -----
+      // ----- 1. QUẢN LÝ DANH SÁCH LẦN GIẢI (SESSIONS) -----
+      function getActiveSession() {
+        let found = sessions.find((s) => s.id === activeSessionId);
+        if (!found && sessions.length > 0) {
+          found = sessions[0];
+          activeSessionId = found.id;
+        }
+        return found;
+      }
+
+      function getActiveSolves() {
+        const current = getActiveSession();
+        return current ? current.solves : [];
+      }
+
+      function saveSessions() {
+        const res = safeSetStorage(STORAGE_SESSIONS_KEY, JSON.stringify(sessions));
+        safeSetStorage(STORAGE_ACTIVE_SESSION_KEY, activeSessionId);
+        if (!res.ok) {
+          showToast('Bộ nhớ trình duyệt đã đầy, không thể lưu thêm dữ liệu.');
+        }
+      }
+
+      function loadSessions() {
+        const raw = safeGetStorage(STORAGE_SESSIONS_KEY);
+        const savedActive = safeGetStorage(STORAGE_ACTIVE_SESSION_KEY);
+
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              sessions = parsed;
+              activeSessionId = savedActive && sessions.some((s) => s.id === savedActive)
+                ? savedActive
+                : sessions[0].id;
+              return;
+            }
+          } catch (_) {}
+        }
+
+        // Chuyển dữ liệu cũ (nếu có) sang Danh sách 1
+        let initialSolves = [];
+        const legacyRaw = safeGetStorage(LEGACY_SOLVES_KEY);
+        if (legacyRaw) {
+          try {
+            const parsedLegacy = JSON.parse(legacyRaw);
+            if (Array.isArray(parsedLegacy)) initialSolves = parsedLegacy;
+          } catch (_) {}
+        }
+
+        const defaultSession = {
+          id: 'session-' + Date.now(),
+          name: 'Danh sách 1 (3x3)',
+          solves: initialSolves
+        };
+        sessions = [defaultSession];
+        activeSessionId = defaultSession.id;
+        saveSessions();
+      }
+
+      function renderSessionSelect() {
+        sessionSelectEl.innerHTML = '';
+        sessions.forEach((sess) => {
+          const opt = document.createElement('option');
+          opt.value = sess.id;
+          opt.textContent = `${sess.name} (${sess.solves.length} lần)`;
+          if (sess.id === activeSessionId) opt.selected = true;
+          sessionSelectEl.appendChild(opt);
+        });
+      }
+
+      sessionSelectEl.addEventListener('change', (e) => {
+        activeSessionId = e.target.value;
+        saveSessions();
+        renderAllStatsAndHistory();
+        const solves = getActiveSolves();
+        timerDisplayEl.textContent = solves.length > 0 ? formatSolveDisplay(solves[0]) : '0.00';
+        sessionSelectEl.blur();
+      });
+
+      // Modal tạo danh sách mới
+      function openCreateSessionModal() {
+        modalTitleEl.textContent = 'Tạo danh sách lần giải mới';
+        modalBodyEl.innerHTML = '';
+
+        const desc = document.createElement('p');
+        desc.textContent = 'Đặt tên cho danh sách mới (ví dụ: Luyện 3x3 CFOP, Giải 2 tay, Thi đấu Chủ nhật...):';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'glass-input';
+        input.placeholder = `Danh sách ${sessions.length + 1}`;
+        input.value = `Danh sách ${sessions.length + 1}`;
+
+        modalBodyEl.append(desc, input);
+        modalActionsEl.innerHTML = '';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'glass-btn';
+        cancelBtn.textContent = 'Hủy';
+        cancelBtn.addEventListener('click', closeModal);
+
+        const createBtn = document.createElement('button');
+        createBtn.type = 'button';
+        createBtn.className = 'glass-btn primary';
+        createBtn.textContent = 'Tạo mới';
+        const submitCreate = () => {
+          const name = input.value.trim() || `Danh sách ${sessions.length + 1}`;
+          const newSess = {
+            id: 'session-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+            name,
+            solves: []
+          };
+          sessions.push(newSess);
+          activeSessionId = newSess.id;
+          saveSessions();
+          renderAllStatsAndHistory();
+          timerDisplayEl.textContent = '0.00';
+          closeModal();
+          showToast(`Đã tạo "${name}".`);
+        };
+        createBtn.addEventListener('click', submitCreate);
+        input.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') submitCreate();
+        });
+
+        modalActionsEl.append(cancelBtn, createBtn);
+        modalBackdropEl.classList.add('is-open');
+        setTimeout(() => input.focus(), 40);
+      }
+
+      // Modal đổi tên danh sách
+      function openRenameSessionModal() {
+        const current = getActiveSession();
+        if (!current) return;
+
+        modalTitleEl.textContent = 'Đổi tên danh sách';
+        modalBodyEl.innerHTML = '';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'glass-input';
+        input.value = current.name;
+
+        modalBodyEl.appendChild(input);
+        modalActionsEl.innerHTML = '';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'glass-btn';
+        cancelBtn.textContent = 'Hủy';
+        cancelBtn.addEventListener('click', closeModal);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.className = 'glass-btn primary';
+        saveBtn.textContent = 'Lưu tên';
+        const submitRename = () => {
+          const newName = input.value.trim();
+          if (!newName) {
+            showToast('Tên danh sách không được để trống.');
+            return;
+          }
+          current.name = newName;
+          saveSessions();
+          renderSessionSelect();
+          closeModal();
+          showToast('Đã đổi tên danh sách.');
+        };
+        saveBtn.addEventListener('click', submitRename);
+        input.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') submitRename();
+        });
+
+        modalActionsEl.append(cancelBtn, saveBtn);
+        modalBackdropEl.classList.add('is-open');
+        setTimeout(() => input.focus(), 40);
+      }
+
+      // Modal xóa danh sách
+      function openDeleteSessionModal() {
+        if (sessions.length <= 1) {
+          showToast('Cần giữ lại ít nhất 1 danh sách. Bạn có thể bấm "Làm trống" để xóa các lần giải.');
+          return;
+        }
+        const current = getActiveSession();
+        if (!current) return;
+
+        modalTitleEl.textContent = 'Xóa danh sách này?';
+        modalBodyEl.textContent = `Bạn có chắc muốn xóa danh sách "${current.name}" (${current.solves.length} lần giải)?`;
+        modalActionsEl.innerHTML = '';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'glass-btn';
+        cancelBtn.textContent = 'Hủy';
+        cancelBtn.addEventListener('click', closeModal);
+
+        const confirmBtn = document.createElement('button');
+        confirmBtn.type = 'button';
+        confirmBtn.className = 'glass-btn danger';
+        confirmBtn.textContent = 'Xóa danh sách';
+        confirmBtn.addEventListener('click', () => {
+          sessions = sessions.filter((s) => s.id !== current.id);
+          activeSessionId = sessions[0].id;
+          saveSessions();
+          renderAllStatsAndHistory();
+          const solves = getActiveSolves();
+          timerDisplayEl.textContent = solves.length > 0 ? formatSolveDisplay(solves[0]) : '0.00';
+          closeModal();
+          showToast(`Đã xóa danh sách "${current.name}".`);
+        });
+
+        modalActionsEl.append(cancelBtn, confirmBtn);
+        modalBackdropEl.classList.add('is-open');
+      }
+
+      // Modal nhập thời gian thủ công vào danh sách
+      function openAddManualSolveModal() {
+        const current = getActiveSession();
+        if (!current) return;
+
+        modalTitleEl.textContent = `Thêm lần giải vào "${current.name}"`;
+        modalBodyEl.innerHTML = '';
+
+        const desc = document.createElement('p');
+        desc.textContent = 'Nhập thời gian (tính bằng giây, ví dụ: 11.45 hoặc 9.82):';
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = '0.01';
+        input.min = '0.01';
+        input.className = 'glass-input';
+        input.placeholder = 'Ví dụ: 12.34';
+
+        modalBodyEl.append(desc, input);
+        modalActionsEl.innerHTML = '';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'glass-btn';
+        cancelBtn.textContent = 'Hủy';
+        cancelBtn.addEventListener('click', closeModal);
+
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'glass-btn primary';
+        addBtn.textContent = 'Thêm vào DS';
+        const submitManual = () => {
+          const val = parseFloat(input.value);
+          if (Number.isNaN(val) || val <= 0 || val > 3600) {
+            showToast('Vui lòng nhập số giây hợp lệ (lớn hơn 0).');
+            return;
+          }
+          const timeMs = Math.round(val * 1000);
+          const newSolve = {
+            id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+            timeMs,
+            penalty: null,
+            scramble: currentScramble + ' (Nhập tay)',
+            createdAt: new Date().toISOString()
+          };
+          current.solves.unshift(newSolve);
+          saveSessions();
+          renderAllStatsAndHistory();
+          timerDisplayEl.textContent = formatSolveDisplay(newSolve);
+          generateScramble();
+          closeModal();
+          showToast(`Đã thêm ${formatTime(timeMs)} vào danh sách.`);
+        };
+        addBtn.addEventListener('click', submitManual);
+        input.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') submitManual();
+        });
+
+        modalActionsEl.append(cancelBtn, addBtn);
+        modalBackdropEl.classList.add('is-open');
+        setTimeout(() => input.focus(), 40);
+      }
+
+      // Modal xuất danh sách lần giải để copy chia sẻ
+      function openExportListModal() {
+        const current = getActiveSession();
+        if (!current || current.solves.length === 0) {
+          showToast('Danh sách hiện tại chưa có lần giải nào để xuất.');
+          return;
+        }
+
+        const solves = current.solves;
+        const ao5 = calculateWCAAverage(solves, 5);
+        const ao12 = calculateWCAAverage(solves, 12);
+        const validTimes = solves.map(getEffectiveTime).filter((t) => t !== Infinity);
+        const bestStr = validTimes.length > 0 ? formatTime(Math.min(...validTimes)) : '--';
+
+        const lines = [
+          `=== ${current.name} (${solves.length} lần giải) ===`,
+          `PB: ${bestStr} | Ao5: ${ao5 === null ? '--' : formatTime(ao5)} | Ao12: ${ao12 === null ? '--' : formatTime(ao12)}`,
+          ''
+        ];
+
+        // Hiển thị theo thứ tự từ lần #1 đến mới nhất
+        const chronological = [...solves].reverse();
+        chronological.forEach((s, idx) => {
+          lines.push(`${idx + 1}. ${formatSolveDisplay(s)}   [${s.scramble || ''}]`);
+        });
+
+        const exportText = lines.join('\n');
+
+        modalTitleEl.textContent = `Xuất danh sách — ${current.name}`;
+        modalBodyEl.innerHTML = '';
+
+        const pre = document.createElement('div');
+        pre.className = 'modal-scramble';
+        pre.textContent = exportText;
+        modalBodyEl.appendChild(pre);
+
+        modalActionsEl.innerHTML = '';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'glass-btn';
+        closeBtn.textContent = 'Đóng';
+        closeBtn.addEventListener('click', closeModal);
+
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'glass-btn primary';
+        copyBtn.textContent = 'Sao chép danh sách';
+        copyBtn.addEventListener('click', () => copyTextToClipboard(exportText));
+
+        modalActionsEl.append(closeBtn, copyBtn);
+        modalBackdropEl.classList.add('is-open');
+      }
+
+      newSessionBtn.addEventListener('click', openCreateSessionModal);
+      renameSessionBtn.addEventListener('click', openRenameSessionModal);
+      deleteSessionBtn.addEventListener('click', openDeleteSessionModal);
+      addManualSolveBtn.addEventListener('click', openAddManualSolveModal);
+      exportListBtn.addEventListener('click', openExportListModal);
+
+      // ----- 2. ĐỊNH DẠNG THỜI GIAN & TÍNH TOÁN WCA -----
       function formatTime(ms) {
         if (ms === Infinity) return 'DNF';
         const totalCentiseconds = Math.floor(ms / 10);
@@ -949,7 +1431,7 @@
         return sum / trimmed.length;
       }
 
-      // ----- 2. BỘ SINH SCRAMBLE 3x3 CHUẨN WCA (20-22 MOVES) -----
+      // ----- 3. BỘ SINH SCRAMBLE 3x3 CHUẨN WCA (20-22 MOVES) -----
       function generateScramble() {
         const faces = ['U', 'D', 'L', 'R', 'F', 'B'];
         const axisMap = { U: 0, D: 0, L: 1, R: 1, F: 2, B: 2 };
@@ -984,7 +1466,7 @@
         scrambleDisplayEl.textContent = currentScramble;
       }
 
-      // ----- 3. CƠ CHẾ ĐỒNG HỒ CHUẨN WCA (Date.now + requestAnimationFrame) -----
+      // ----- 4. CƠ CHẾ ĐỒNG HỒ CHUẨN WCA (Date.now + requestAnimationFrame) -----
       function setTimerVisual(newState) {
         timerDisplayEl.classList.remove('is-holding', 'is-ready', 'is-running');
         document.body.classList.remove('is-timing');
@@ -1071,8 +1553,11 @@
           createdAt: new Date().toISOString()
         };
 
-        solves.unshift(newSolve);
-        saveSolves();
+        const current = getActiveSession();
+        if (current) {
+          current.solves.unshift(newSolve);
+          saveSessions();
+        }
         renderAllStatsAndHistory();
         generateScramble();
       }
@@ -1083,6 +1568,9 @@
           return;
         }
 
+        const activeTag = document.activeElement ? document.activeElement.tagName : '';
+        if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
+
         if (state === TIMER_STATE.RUNNING) {
           e.preventDefault();
           stopTimer();
@@ -1090,7 +1578,7 @@
         }
 
         if (e.code === 'Space') {
-          if (document.activeElement && (document.activeElement.tagName === 'BUTTON' || document.activeElement.tagName === 'SELECT')) {
+          if (document.activeElement && (activeTag === 'BUTTON' || activeTag === 'SELECT')) {
             document.activeElement.blur();
           }
           e.preventDefault();
@@ -1100,6 +1588,7 @@
       });
 
       document.addEventListener('keyup', (e) => {
+        if (modalBackdropEl.classList.contains('is-open')) return;
         if (e.code === 'Space') {
           e.preventDefault();
           if (justStopped) {
@@ -1151,32 +1640,13 @@
         }
       });
 
-      // ----- 4. LỊCH SỬ, THỐNG KÊ & MODAL -----
-      function saveSolves() {
-        const res = safeSetStorage(STORAGE_SOLVES_KEY, JSON.stringify(solves));
-        if (!res.ok) {
-          showToast('Bộ nhớ trình duyệt đã đầy, không thể lưu thêm lịch sử.');
-        }
-      }
-
-      function loadSolves() {
-        const raw = safeGetStorage(STORAGE_SOLVES_KEY);
-        if (!raw) return;
-        try {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) {
-            solves = parsed;
-          }
-        } catch (_) {
-          solves = [];
-        }
-      }
-
+      // ----- 5. HIỂN THỊ LỊCH SỬ, THỐNG KÊ & MODAL -----
       function togglePenalty(solveId, type) {
+        const solves = getActiveSolves();
         const target = solves.find((s) => s.id === solveId);
         if (!target) return;
         target.penalty = target.penalty === type ? null : type;
-        saveSolves();
+        saveSessions();
         renderAllStatsAndHistory();
         if (solves[0] && solves[0].id === solveId) {
           timerDisplayEl.textContent = formatSolveDisplay(solves[0]);
@@ -1184,16 +1654,19 @@
       }
 
       function deleteSolve(solveId) {
-        solves = solves.filter((s) => s.id !== solveId);
-        saveSolves();
+        const current = getActiveSession();
+        if (!current) return;
+        current.solves = current.solves.filter((s) => s.id !== solveId);
+        saveSessions();
         renderAllStatsAndHistory();
-        if (solves.length === 0) {
+        if (current.solves.length === 0) {
           timerDisplayEl.textContent = '0.00';
         }
       }
 
       function renderQuickPenaltyBar() {
         quickPenaltyBarEl.innerHTML = '';
+        const solves = getActiveSolves();
         if (solves.length === 0) return;
 
         const latest = solves[0];
@@ -1219,6 +1692,9 @@
       }
 
       function renderAllStatsAndHistory() {
+        renderSessionSelect();
+        const solves = getActiveSolves();
+
         statCountEl.textContent = String(solves.length);
 
         const ao5 = calculateWCAAverage(solves, 5);
@@ -1236,7 +1712,7 @@
         if (solves.length === 0) {
           const emptyEl = document.createElement('div');
           emptyEl.className = 'history-empty';
-          emptyEl.textContent = 'Chưa có lần giải nào. Nhấn giữ Space hoặc chạm màn hình để bắt đầu!';
+          emptyEl.textContent = 'Danh sách này chưa có lần giải nào. Nhấn giữ Space hoặc bấm "+ Nhập giờ" để thêm!';
           historyListEl.appendChild(emptyEl);
           return;
         }
@@ -1321,12 +1797,13 @@
       }
 
       function openClearConfirmModal() {
-        if (solves.length === 0) {
-          showToast('Lịch sử đang trống.');
+        const current = getActiveSession();
+        if (!current || current.solves.length === 0) {
+          showToast('Danh sách này đang trống.');
           return;
         }
-        modalTitleEl.textContent = 'Xóa toàn bộ lịch sử?';
-        modalBodyEl.textContent = `Bạn có chắc muốn xóa tất cả ${solves.length} lần giải và đặt lại thống kê Ao5 / Ao12? Hành động này không thể hoàn tác.`;
+        modalTitleEl.textContent = 'Làm trống danh sách hiện tại?';
+        modalBodyEl.textContent = `Bạn có chắc muốn xóa tất cả ${current.solves.length} lần giải trong "${current.name}"? Các danh sách khác vẫn được giữ nguyên.`;
         modalActionsEl.innerHTML = '';
 
         const cancelBtn = document.createElement('button');
@@ -1338,14 +1815,14 @@
         const confirmBtn = document.createElement('button');
         confirmBtn.type = 'button';
         confirmBtn.className = 'glass-btn danger';
-        confirmBtn.textContent = 'Xóa tất cả';
+        confirmBtn.textContent = 'Xóa hết lần giải';
         confirmBtn.addEventListener('click', () => {
-          solves = [];
-          saveSolves();
+          current.solves = [];
+          saveSessions();
           renderAllStatsAndHistory();
           timerDisplayEl.textContent = '0.00';
           closeModal();
-          showToast('Đã xóa toàn bộ lịch sử giải.');
+          showToast(`Đã làm trống "${current.name}".`);
         });
 
         modalActionsEl.append(cancelBtn, confirmBtn);
@@ -1356,7 +1833,7 @@
         if (e.target === modalBackdropEl) closeModal();
       });
 
-      // ----- 5. ĐỔI HÌNH NỀN & NÉN ẢNH BẰNG CANVAS API -----
+      // ----- 6. ĐỔI HÌNH NỀN & NÉN ẢNG BẰNG CANVAS API -----
       function applyBackground(dataUrl) {
         if (dataUrl) {
           document.body.style.backgroundImage = `url("${dataUrl}")`;
@@ -1459,7 +1936,7 @@
         const savedBg = safeGetStorage(STORAGE_BG_KEY);
         if (savedBg) applyBackground(savedBg);
 
-        loadSolves();
+        loadSessions();
         renderAllStatsAndHistory();
         generateScramble();
       }
